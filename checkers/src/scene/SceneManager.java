@@ -1,5 +1,6 @@
 package scene;
 
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -25,8 +26,9 @@ public class SceneManager {
 		menuScene = new MenuScene(this);
 		gameScene = new GameScene(this);
 		stage = new Stage();
-		stage.setResizable(false);
-		stage.setTitle("Checkers");
+		stage.setResizable(false); // dont let resizing of the window happen
+		stage.setTitle("Checkers"); // application title
+		stage.getIcons().add(new Image("file:resources/logo.png")); // application icon
 		stage.setScene(menuScene);
 	}
 	

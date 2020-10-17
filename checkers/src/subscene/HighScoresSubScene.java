@@ -1,6 +1,6 @@
 package subscene;
 
-import gui.MenuButton;
+import gui.CheckersButton;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -10,6 +10,9 @@ import scene.CheckersScene;
 
 /**
  * Subscene to handle the view for the high scores menu.
+ * 
+ * TODO: Add back arrow to the left of the text as shown in the design. This should
+ * be across all back arrows.
  * 
  * @author Andrew Johnston
  *
@@ -33,7 +36,7 @@ public class HighScoresSubScene extends CheckersSubScene {
 	 * back to the main-menu.
 	 */
 	private void createBackButton () {
-		MenuButton button = new MenuButton("Back");
+		CheckersButton button = new CheckersButton("BACK", CheckersButton.ButtonSizes.MEDIUM);
 		
 		button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -47,8 +50,8 @@ public class HighScoresSubScene extends CheckersSubScene {
 			}
 		});
 		
-		button.setLayoutX(100);
-		button.setLayoutY(150);
+		button.setLayoutX(30);
+		button.setLayoutY(30);
 		add(button);
 	}
 

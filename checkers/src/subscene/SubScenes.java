@@ -12,5 +12,6 @@ public enum SubScenes {
 	NEW_GAME,
 	HIGH_SCORES,
 	HOW_TO_PLAY,
-	IN_GAME_MENU
+	IN_GAME_MENU,
+	GAME_BOARD
 }

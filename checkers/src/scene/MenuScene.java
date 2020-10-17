@@ -43,6 +43,8 @@ public class MenuScene extends CheckersScene {
 	 */
 	private void setup () {
 		super.setBackground("file:resources/background.png");
+		super.getStylesheets().add("file:resources/styles/button.css");
+		super.getStylesheets().add("file:resources/styles/label.css");
 		
 		newGame = new NewGameSubScene(this);
 		add(newGame);

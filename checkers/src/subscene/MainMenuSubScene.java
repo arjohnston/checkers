@@ -1,13 +1,18 @@
 package subscene;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-import gui.MenuButton;
+import gui.CheckersButton;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import main.Configs;
@@ -27,7 +32,7 @@ public class MainMenuSubScene extends CheckersSubScene {
 	/**
 	 * A list of all the buttons on this sub-scene.
 	 */
-	List<MenuButton> buttons;
+	private List<CheckersButton> buttons;
 	
 	/**
 	 * Initialize the sub-scene.
@@ -37,6 +42,55 @@ public class MainMenuSubScene extends CheckersSubScene {
 		super(scene);
 		buttons = new ArrayList<>();
 		createButtons();
+		setHeader();
+		setFooter();
+		setLogo();
+	}
+	
+	/**
+	 * Add the header to the scene.
+	 */
+	private void setHeader () {
+		Label header = new Label("C H E C K E R S");
+		header.getStyleClass().add("header");
+
+		header.setLayoutX(100);
+		header.setLayoutY(50);
+		try {
+			header.setFont(Font.loadFont(new FileInputStream(Configs.Font.MONTSERRAT_SEMIBOLD), 52));
+		} catch (FileNotFoundException e) {
+			header.setFont(Font.font("Verdana", 52));
+		}
+		
+		add(header);
+	}
+	
+	/**
+	 * Add the footer to the scene.
+	 */
+	private void setFooter () {
+		Label footer = new Label("CURATED BY: ANDREW JOHNSTON, SHANON GAO, SHAION HABIBVAND, VISHNU ADDA");
+		footer.getStyleClass().add("footer");
+
+		footer.setLayoutX(20);
+		footer.setLayoutY(Configs.WINDOW_HEIGHT - 30);
+		try {
+			footer.setFont(Font.loadFont(new FileInputStream(Configs.Font.MONTSERRAT_MEDIUM), 14));
+		} catch (FileNotFoundException e) {
+			footer.setFont(Font.font("Verdana", 14));
+		}
+		
+		add(footer);
+	}
+	
+	/**
+	 * Add the logo to the scene.
+	 */
+	private void setLogo () {
+		ImageView logo = new ImageView("file:resources/logo.png");
+		logo.setLayoutX(Configs.WINDOW_WIDTH - 375);
+		logo.setLayoutY(Configs.WINDOW_HEIGHT - 300);
+		add(logo);
 	}
 	
 	/**
@@ -53,7 +107,7 @@ public class MainMenuSubScene extends CheckersSubScene {
 	 * Add a menu button and calculate it's position.
 	 * @param button Node button to be added.
 	 */
-	private void addMenuButton (MenuButton button) {
+	private void addMenuButton (CheckersButton button) {
 		button.setLayoutX(MENU_BUTTON_STARTING_POS_X);
 		button.setLayoutY(MENU_BUTTON_STARTING_POS_Y + buttons.size() * 100);
 		buttons.add(button);
@@ -64,7 +118,7 @@ public class MainMenuSubScene extends CheckersSubScene {
 	 * Create the New Game button.
 	 */
 	private void createNewGameButton () {
-		MenuButton button = new MenuButton("New Game");
+		CheckersButton button = new CheckersButton("NEW GAME");
 		
 		button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -85,7 +139,7 @@ public class MainMenuSubScene extends CheckersSubScene {
 	 * Create the High Scores button.
 	 */
 	private void createHighScoresButton () {
-		MenuButton button = new MenuButton("High Scores");
+		CheckersButton button = new CheckersButton("HIGH SCORES");
 		
 		button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -106,7 +160,7 @@ public class MainMenuSubScene extends CheckersSubScene {
 	 * Create the How to Play button.
 	 */
 	private void createHowToPlayButton () {
-		MenuButton button = new MenuButton("How to Play");
+		CheckersButton button = new CheckersButton("HOW TO PLAY");
 		
 		button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -127,7 +181,7 @@ public class MainMenuSubScene extends CheckersSubScene {
 	 * Create the Exit button.
 	 */
 	private void createExitButton () {
-		MenuButton button = new MenuButton("Exit");
+		CheckersButton button = new CheckersButton("EXIT");
 		
 		button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override

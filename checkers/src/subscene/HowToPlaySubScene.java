@@ -1,6 +1,6 @@
 package subscene;
 
-import gui.MenuButton;
+import gui.CheckersButton;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -31,7 +31,7 @@ public class HowToPlaySubScene extends CheckersSubScene {
 	 * subscene.
 	 */
 	private void createBackButton () {
-		MenuButton button = new MenuButton("Back");
+		CheckersButton button = new CheckersButton("BACK", CheckersButton.ButtonSizes.MEDIUM);
 		
 		button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -46,8 +46,8 @@ public class HowToPlaySubScene extends CheckersSubScene {
 			}
 		});
 		
-		button.setLayoutX(100);
-		button.setLayoutY(150);
+		button.setLayoutX(30);
+		button.setLayoutY(30);
 		add(button);
 	}
 
