@@ -1,9 +1,14 @@
 package subscene;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 import gui.CheckersButton;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Label;
+import javafx.scene.text.Font;
 import javafx.util.Duration;
 import main.Configs;
 import scene.CheckersScene;
@@ -29,6 +34,25 @@ public class HighScoresSubScene extends CheckersSubScene {
 
 		setLayoutX(Configs.WINDOW_WIDTH);		
 		createBackButton();
+		setHeader();
+	}
+	
+	/**
+	 * Add a header to the sub-scene.
+	 */
+	private void setHeader () {
+		Label header = new Label("H I G H S C O R E S");
+		header.getStyleClass().add("header");
+
+		header.setLayoutX(305);
+		header.setLayoutY(34);
+		try {
+			header.setFont(Font.loadFont(new FileInputStream(Configs.Font.MONTSERRAT_SEMIBOLD), 52));
+		} catch (FileNotFoundException e) {
+			header.setFont(Font.font("Verdana", 52));
+		}
+		
+		add(header);
 	}
 	
 	/**

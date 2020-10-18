@@ -21,6 +21,8 @@ public class SceneManager {
 	
 	/**
 	 * Create a stage (window) and initialize the scene manager.
+	 * 
+	 * TODO: Change application title bar color.
 	 */
 	public SceneManager () {
 		menuScene = new MenuScene(this);
