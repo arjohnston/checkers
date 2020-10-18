@@ -25,7 +25,6 @@ public abstract class CheckersScene extends Scene {
 	
 	/**
 	 * Initialize a new JavaFX scene object.
-	 * @param pane An empty AnchorPane object. To pass the object, utilize "new AnchorPane()"
 	 */
 	public CheckersScene () {
 		super(new AnchorPane(), Configs.WINDOW_WIDTH, Configs.WINDOW_HEIGHT);

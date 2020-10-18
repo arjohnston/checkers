@@ -41,7 +41,7 @@ public abstract class CheckersSubScene extends SubScene {
 	
 	/**
 	 * Transition from one sub-scene to a target sub-scene
-	 * @param subScene
+	 * @param subScene SubScenes enum: The sub-scene to transition to
 	 */
 	public void segueToSubScene (SubScenes subScene) {
 		try {

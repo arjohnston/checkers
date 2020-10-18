@@ -19,7 +19,7 @@ public class NewGameSubScene extends CheckersSubScene {
 
 	/**
 	 * Initialize new game sub-scene.
-	 * @param scene
+	 * @param scene CheckersScene
 	 */
 	public NewGameSubScene(CheckersScene scene) {
 		super(scene);

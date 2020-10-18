@@ -24,7 +24,7 @@ public class HowToPlaySubScene extends CheckersSubScene {
 
 	/**
 	 * Initialize the sub-scene.
-	 * @param scene
+	 * @param scene CheckersScene
 	 */
 	public HowToPlaySubScene(CheckersScene scene) {
 		super(scene);
