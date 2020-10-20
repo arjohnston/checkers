@@ -2,16 +2,23 @@ package subscene;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import gui.CheckersButton;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 import main.Configs;
 import scene.CheckersScene;
+import utils.JsonFileIO;
 
 /**
  * Subscene to handle the view for the high scores menu.
@@ -24,6 +31,8 @@ import scene.CheckersScene;
  */
 
 public class HighScoresSubScene extends CheckersSubScene {
+	private Map<Long, String> highScores;
+
 	/**
 	 * Initialize the high score subscene
 	 * 
@@ -31,10 +40,12 @@ public class HighScoresSubScene extends CheckersSubScene {
 	 */
 	public HighScoresSubScene(CheckersScene scene) {
 		super(scene);
-
+		this.highScores = JsonFileIO.load();
 		setLayoutX(Configs.WINDOW_WIDTH);		
 		createBackButton();
 		setHeader();
+		setTableHeader();
+		setTableContent();
 	}
 	
 	/**
@@ -46,13 +57,117 @@ public class HighScoresSubScene extends CheckersSubScene {
 
 		header.setLayoutX(305);
 		header.setLayoutY(34);
-		try {
-			header.setFont(Font.loadFont(new FileInputStream(Configs.Font.MONTSERRAT_SEMIBOLD), 52));
-		} catch (FileNotFoundException e) {
-			header.setFont(Font.font("Verdana", 52));
-		}
+
+		setFont(header, Configs.Font.MONTSERRAT_SEMIBOLD, 52);
 		
 		add(header);
+	}
+	
+	/**
+	 * Set the font type and size for a given label.
+	 * @param label The JavaFX Label to apply the font to.
+	 * @param fontType String FontType
+	 * @param fontSize Integer size of the font.
+	 */
+	private void setFont (Label label, String fontType, int fontSize) {
+		try {
+			label.setFont(Font.loadFont(new FileInputStream(fontType), fontSize));
+		} catch (FileNotFoundException e) {
+			label.setFont(Font.font("Verdana", fontSize));
+		}
+	}
+	
+	/**
+	 * Create the header - or top row - of the table.
+	 */
+	private void setTableHeader () {
+		HBox header = createTableRow("RANK", "NAME", "TIME");
+		header.setLayoutX(275);
+		header.setLayoutY(140);
+				
+		add(header);
+	}
+	
+	/**
+	 * Set the content of the table. If there is no highscores saved, then
+	 * load a message describing no highscores available.
+	 */
+	private void setTableContent () {
+		// if no content available, display no content, otherwise loop through and set each row up to 10
+		VBox content = new VBox();
+		content.setLayoutX(275);
+		content.setLayoutY(180);
+		
+		if (this.highScores == null || this.highScores.size() <= 0) {
+			HBox noContent = new HBox();
+			Label noContentLabel = new Label("No highscores available.");
+			setFont(noContentLabel, Configs.Font.MONTSERRAT_REGULAR, 22);
+			noContentLabel.getStyleClass().add("empty-content");
+			noContent.getChildren().add(noContentLabel);
+			content.getChildren().add(noContent);
+		} else {
+			// get an array of times
+			List<Long> times = new ArrayList<Long>();
+
+			this.highScores.forEach((time, name) -> {
+				times.add(time);
+			});
+			
+			// sort the array by least to greatest
+			Collections.sort(times);
+			
+			// create each row from the array
+			times.forEach(time -> {
+				HBox row = createTableRow(Integer.toString(times.indexOf(time) + 1), this.highScores.get(time), convertToTimeStamp(time));
+				row.getStyleClass().add("table-row");
+				content.getChildren().add(row);
+			});
+		}
+		
+		add(content);
+	}
+	
+	/**
+	 * Convert the given milliseconds into minutes and seconds.
+	 * @param milliseconds Milliseconds to be converted
+	 * @return String of MM:SS
+	 */
+	private String convertToTimeStamp (long milliseconds) {
+		int minutes = (int) Math.floor((milliseconds / 1000) / 60);
+		int seconds = (int) ((milliseconds / 1000) % 60);
+		
+		String minString = minutes < 9 ? "0" + minutes : Integer.toString(minutes);
+		String secString = seconds < 9 ? seconds + "0" : Integer.toString(seconds);
+		
+		return minString + ":" + secString;
+	}
+	
+	/**
+	 * Create the data for one row in the table.
+	 * @param rank String rank
+	 * @param name String name
+	 * @param time String time
+	 * @return HBox row
+	 */
+	private HBox createTableRow (String rank, String name, String time) {
+		HBox hbox = new HBox();
+		Label rankLabel = new Label(rank);
+		Label nameLabel = new Label(name);
+		Label timeLabel = new Label(time);
+		
+		rankLabel.getStyleClass().add("col1");
+		nameLabel.getStyleClass().add("col2");
+		timeLabel.getStyleClass().add("col3");
+		
+		setFont(rankLabel, Configs.Font.MONTSERRAT_REGULAR, 22);
+		setFont(nameLabel, Configs.Font.MONTSERRAT_REGULAR, 22);
+		setFont(timeLabel, Configs.Font.MONTSERRAT_REGULAR, 22);
+		
+		hbox.getChildren().add(rankLabel);
+		hbox.getChildren().add(nameLabel);
+		hbox.getChildren().add(timeLabel);
+		
+		return hbox;
 	}
 	
 	/**

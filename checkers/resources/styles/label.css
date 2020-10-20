@@ -8,3 +8,25 @@
 .paragraph {
 	-fx-text-fill: white;
 }
+
+.col1 {
+	-fx-min-width: 90px;
+	-fx-max-width: 90px;
+	-fx-text-fill: white;
+}
+.col2 {
+	-fx-min-width: 350px;
+	-fx-max-width: 350px;
+	-fx-text-fill: white;
+}
+.col3 {
+	-fx-min-width: 150px;
+	-fx-max-width: 150px;
+	-fx-text-fill: white;
+}
+.empty-content {
+	-fx-text-fill: rgba(255,255,255,0.7);
+}
+.table-row {
+	-fx-padding: 6px 0;
+}
