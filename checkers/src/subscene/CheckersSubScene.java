@@ -1,9 +1,9 @@
 package subscene;
 
+import application.Configs;
 import javafx.scene.Node;
 import javafx.scene.SubScene;
 import javafx.scene.layout.AnchorPane;
-import main.Configs;
 import scene.CheckersScene;
 
 /**
