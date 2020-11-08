@@ -108,6 +108,7 @@ public class HowToPlaySubScene extends CheckersSubScene {
 	 * Initialize a back button to transition back to the main-menu
 	 * subscene.
 	 */
+	
 	private void createBackButton () {
 		CheckersButton button = new CheckersButton("BACK", CheckersButton.ButtonSizes.MEDIUM);
 		

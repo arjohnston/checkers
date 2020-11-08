@@ -14,5 +14,6 @@ public enum SubScenes {
 	HOW_TO_PLAY,
 	IN_GAME_MENU,
 	GAME_BOARD,
-	NEW_GAME_PVP
+	NEW_GAME_PVP,
+	WIN_CONDITION
 }
