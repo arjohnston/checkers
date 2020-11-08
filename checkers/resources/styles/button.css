@@ -17,6 +17,7 @@
 
 .menu-button.medium {
 	-fx-min-width: 200px;
+	-fx-alignment: center;
 }
 
 .menu-button.small {

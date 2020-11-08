@@ -7,6 +7,7 @@ import subscene.MainMenuSubScene;
 import subscene.NewGamePVPSubScene;
 import subscene.NewGameSubScene;
 import subscene.SubScenes;
+import subscene.WinConditionSubScene;
 
 /**
  * This scene handles each of the views for the pre-game menu, including:
@@ -28,6 +29,7 @@ public class MenuScene extends CheckersScene {
 	private CheckersSubScene highScores;
 	private CheckersSubScene howToPlay;
 	private CheckersSubScene newGamePVP;
+	private CheckersSubScene winCondition;
 	
 	/**
 	 * Initialize the scene with a reference to the scene manager class so
@@ -63,6 +65,9 @@ public class MenuScene extends CheckersScene {
 		newGamePVP = new NewGamePVPSubScene(this);
 		add(newGamePVP);
 		
+		winCondition = new WinConditionSubScene(this);
+		add(winCondition);
+		
 		activeScene = mainMenu;
 	}
 
@@ -89,6 +94,10 @@ public class MenuScene extends CheckersScene {
 			
 		case NEW_GAME_PVP:
 			segueTo = newGamePVP;
+			break;
+			
+		case WIN_CONDITION:
+			segueTo = winCondition;
 			break;
 			
 		default:

@@ -1,6 +1,7 @@
 .header {
 	-fx-text-fill: white;
 	-fx-letter-spacing: 10px;
+	-fx-alignment: center;
 }
 .footer {
 	-fx-text-fill: rgba(255,255,255,0.6);
