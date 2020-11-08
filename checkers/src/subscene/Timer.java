@@ -1,3 +1,6 @@
+/**
+ * @shanon gao
+ */
 package subscene;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
