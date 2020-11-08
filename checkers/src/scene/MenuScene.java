@@ -4,6 +4,7 @@ import subscene.CheckersSubScene;
 import subscene.HighScoresSubScene;
 import subscene.HowToPlaySubScene;
 import subscene.MainMenuSubScene;
+import subscene.NewGamePVPSubScene;
 import subscene.NewGameSubScene;
 import subscene.SubScenes;
 
@@ -26,6 +27,7 @@ public class MenuScene extends CheckersScene {
 	private CheckersSubScene newGame;
 	private CheckersSubScene highScores;
 	private CheckersSubScene howToPlay;
+	private CheckersSubScene newGamePVP;
 	
 	/**
 	 * Initialize the scene with a reference to the scene manager class so
@@ -57,6 +59,10 @@ public class MenuScene extends CheckersScene {
 		
 		mainMenu = new MainMenuSubScene(this);
 		add(mainMenu);
+		
+		newGamePVP = new NewGamePVPSubScene(this);
+		add(newGamePVP);
+		
 		activeScene = mainMenu;
 	}
 
@@ -79,6 +85,10 @@ public class MenuScene extends CheckersScene {
 			
 		case HOW_TO_PLAY:
 			segueTo = howToPlay;
+			break;
+			
+		case NEW_GAME_PVP:
+			segueTo = newGamePVP;
 			break;
 			
 		default:
