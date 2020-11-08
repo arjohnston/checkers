@@ -11,7 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
-import main.Configs;
+import application.Configs;
 import scene.CheckersScene;
 
 public class NewGamePVPSubScene extends CheckersSubScene {
