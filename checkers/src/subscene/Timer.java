@@ -20,7 +20,9 @@ public class Timer extends Application {
  Stage windows;
  private final Integer starttime=0;
  private Integer seconds= starttime;
- 
+ public Timer(){
+	 
+ }
  @Override
  public void start(Stage primaryStage) {
   windows= primaryStage;
@@ -34,7 +36,7 @@ public class Timer extends Application {
   HBox layout= new HBox(5);
   layout.getChildren().add(lb);
   root.getChildren().add(layout);
-  Scene scene= new Scene(root, 30,50, Color.BLACK);
+  Scene scene= new Scene(root, 50,50, Color.BLACK);
   windows.setScene(scene);
   windows.show();
   
@@ -55,7 +57,6 @@ public class Timer extends Application {
     
    }
    
-   
   });
   
   time.setCycleCount(Timeline.INDEFINITE);
@@ -64,7 +65,6 @@ public class Timer extends Application {
    time.stop();
   }
   time.play();
-  
   
  }
 

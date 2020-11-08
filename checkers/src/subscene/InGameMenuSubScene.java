@@ -31,14 +31,7 @@ public class InGameMenuSubScene extends CheckersSubScene {
 		createButtons();
 		setHeader();
 		setLogo();
-	//	setTimer();
 	}
-/*
-	private void setTimer() {
-		Timer timer = new Timer();
-		add(timer);
-	}
-	*/
 	private void setHeader () {
 		Label header = new Label("GAME PAUSED");
 		header.getStyleClass().add("header");
@@ -104,11 +97,6 @@ public class InGameMenuSubScene extends CheckersSubScene {
 		button.setLayoutY(MENU_BUTTON_STARTING_POS_Y + buttons.size() * 100);
 		buttons.add(button);
 		add(button);
-	}
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		launch(args);
-
 	}
 
 	@Override
