@@ -1,9 +1,18 @@
 .header {
 	-fx-text-fill: white;
 	-fx-letter-spacing: 10px;
+	-fx-alignment: center;
 }
 .footer {
 	-fx-text-fill: rgba(255,255,255,0.6);
+}
+.name-text-field {
+	-fx-background-color: transparent;
+	-fx-text-fill: lightgray;
+	-fx-border-width: 3px;
+	-fx-border-color: white;
+	-fx-border-radius: 10px;
+	-fx-padding: 18px;
 }
 .paragraph {
 	-fx-text-fill: white;
