@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
+import application.Configs;
 import gui.CheckersButton;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
@@ -15,7 +16,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import main.Configs;
 import scene.CheckersScene;
 
 /**

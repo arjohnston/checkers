@@ -3,13 +3,13 @@ package gui;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+import application.Configs;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
-import main.Configs;
 
 /**
  * This class handles the logic for a button on the main menu.

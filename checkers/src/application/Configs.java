@@ -1,4 +1,4 @@
-package main;
+package application;
 
 /**
  * A global configuration file. Any configurations / constants shared between

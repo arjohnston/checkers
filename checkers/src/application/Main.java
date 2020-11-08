@@ -1,4 +1,4 @@
-package main;
+package application;
 
 /**
  * The main entry point for the application. The only definition that should

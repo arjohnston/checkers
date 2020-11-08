@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import application.Configs;
 import gui.CheckersButton;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
@@ -16,7 +17,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
-import main.Configs;
 import scene.CheckersScene;
 import utils.JsonFileIO;
 
