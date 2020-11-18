@@ -15,6 +15,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
 import scene.CheckersScene;
+import scene.Scenes;
 
 /**
  * The sub-scene for the New Game screen to select difficulty, Player vs Player, etc.
@@ -24,7 +25,7 @@ import scene.CheckersScene;
  */
 
 public class NewGameSubScene extends CheckersSubScene {
-
+	private CheckersScene scene;
 	/**
 	 * Initialize new game sub-scene.
 	 * @param scene CheckersScene
@@ -39,6 +40,8 @@ public class NewGameSubScene extends CheckersSubScene {
 		createDifficultyText();
 		createDifficultyButtons();
 		createStartButton();
+		
+		this.scene = scene;
 	}
 	
 	/**
@@ -224,9 +227,8 @@ public class NewGameSubScene extends CheckersSubScene {
 			@Override
 			public void handle(ActionEvent event) {
 				try {
-					// Temp code, but will segue to Game scene in the future
+					scene.segueToScene(Scenes.GAME);
 					segueToSubScene(SubScenes.MAIN_MENU);
-					//sceneManager.segueTo(Scenes.GAME);
 				} catch (Exception e) {
 					e.printStackTrace();
 					System.exit(-1);

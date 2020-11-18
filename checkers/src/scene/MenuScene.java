@@ -110,4 +110,14 @@ public class MenuScene extends CheckersScene {
 			activeScene = segueTo;
 		}
 	}
+
+	@Override
+	public void segueToScene(Scenes scene) {
+		try {
+			this.sceneManager.segueTo(scene);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(-1);
+		}
+	}
 }

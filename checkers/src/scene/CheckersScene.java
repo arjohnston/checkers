@@ -51,6 +51,8 @@ public abstract class CheckersScene extends Scene {
 	
 	public abstract void segueToSubScene(SubScenes subScene) throws Exception;
 	
+	public abstract void segueToScene(Scenes scene);
+	
 	/**
 	 * Add a JavaFX Node to the scene.
 	 * @param e JavaFX Node

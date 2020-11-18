@@ -1,6 +1,10 @@
 package scene;
 
+import subscene.CheckersSubScene;
+import subscene.GameBoardSubScene;
+import subscene.InGameMenuSubScene;
 import subscene.SubScenes;
+import subscene.WinConditionSubScene;
 
 /**
  * Scene handler for the game play itself. The checker board, in-game menu should
@@ -14,6 +18,11 @@ import subscene.SubScenes;
 
 public class GameScene extends CheckersScene {
 	private SceneManager sceneManager;
+	
+	private CheckersSubScene activeScene;
+	private CheckersSubScene gameBoard;
+	private CheckersSubScene inGameMenu;
+	private CheckersSubScene winCondition;
 	
 	/**
 	 * Initialize the scene with a reference to the game's SceneManager so we
@@ -31,11 +40,56 @@ public class GameScene extends CheckersScene {
 	 */
 	private void setup () {
 		super.setBackground("file:resources/background.png");
+		super.getStylesheets().add("file:resources/styles/button.css");
+		super.getStylesheets().add("file:resources/styles/label.css");
+		
+		gameBoard = new GameBoardSubScene(this);
+		add(gameBoard);
+		
+		inGameMenu = new InGameMenuSubScene(this);
+		add(inGameMenu);
+		
+		winCondition = new WinConditionSubScene(this);
+		add(winCondition);
+		
+		activeScene = gameBoard;
 	}
 
 	@Override
 	public void segueToSubScene(SubScenes subScene) throws Exception {
-		// TODO Auto-generated method stub
+		CheckersSubScene segueTo = null;
+
+		switch (subScene) {
+		case GAME_BOARD:
+			segueTo = gameBoard;
+			break;
+			
+		case IN_GAME_MENU:
+			segueTo = inGameMenu;
+			break;
+			
+		case WIN_CONDITION:
+			segueTo = winCondition;
+			break;
+			
+		default:
+			throw new Exception("Invalid Segue: " + subScene.toString());
+		}
 		
+		if (segueTo != null && activeScene != segueTo) {
+			activeScene.transitionScene(false);
+			segueTo.transitionScene(true);
+			activeScene = segueTo;
+		}
+	}
+
+	@Override
+	public void segueToScene(Scenes scene) {
+		try {
+			this.sceneManager.segueTo(scene);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(-1);
+		}
 	}
 }

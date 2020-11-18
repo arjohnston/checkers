@@ -18,19 +18,25 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import scene.CheckersScene;
+import scene.Scenes;
 
 public class InGameMenuSubScene extends CheckersSubScene {
+	private CheckersScene scene;
+	
 	private List<CheckersButton> buttons;
 	
 	private static final int MENU_BUTTON_STARTING_POS_X = 100;
 	private static final int MENU_BUTTON_STARTING_POS_Y = 150;
 
-	public InGameMenuSubScene(CheckersScene x) {
-		super(x);
+	public InGameMenuSubScene(CheckersScene scene) {
+		super(scene);
 		buttons = new ArrayList<>();
+		setLayoutX(Configs.WINDOW_WIDTH);
 		createButtons();
 		setHeader();
 		setLogo();
+		
+		this.scene = scene;
 	}
 	private void setHeader () {
 		Label header = new Label("GAME PAUSED");
@@ -64,7 +70,7 @@ public class InGameMenuSubScene extends CheckersSubScene {
 			@Override
 			public void handle(ActionEvent event) {
 				try {
-					//segueToSubScene(SubScenes.GAME);
+					segueToSubScene(SubScenes.GAME_BOARD);
 				} catch (Exception e) {
 					e.printStackTrace();
 					System.exit(-1);
@@ -82,6 +88,7 @@ public class InGameMenuSubScene extends CheckersSubScene {
 			public void handle(ActionEvent event) {
 				try {
 					//segueToSubScene(SubScenes.WINNING_CONDITION);
+					scene.segueToScene(Scenes.MENU);
 				} catch (Exception e) {
 					e.printStackTrace();
 					System.exit(-1);
@@ -104,7 +111,7 @@ public class InGameMenuSubScene extends CheckersSubScene {
 		TranslateTransition transition = new TranslateTransition();
 		transition.setDuration(Duration.seconds(0.2));
 		transition.setNode(this);
-		transition.setToX(isSubSceneActive ? 0 : -Configs.WINDOW_WIDTH);
+		transition.setToX(isSubSceneActive ? -Configs.WINDOW_WIDTH : Configs.WINDOW_WIDTH);
 		
 		transition.play();
 	}
