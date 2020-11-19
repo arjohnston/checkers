@@ -17,8 +17,6 @@ import subscene.WinConditionSubScene;
  */
 
 public class GameScene extends CheckersScene {
-	private SceneManager sceneManager;
-	
 	private CheckersSubScene activeScene;
 	private CheckersSubScene gameBoard;
 	private CheckersSubScene inGameMenu;
@@ -30,8 +28,7 @@ public class GameScene extends CheckersScene {
 	 * @param sceneManager SceneManager to manage scene changes.
 	 */
 	public GameScene (SceneManager sceneManager) {
-		this.sceneManager = sceneManager;
-		
+		super(sceneManager);
 		setup();
 	}
 	
@@ -86,7 +83,7 @@ public class GameScene extends CheckersScene {
 	@Override
 	public void segueToScene(Scenes scene) {
 		try {
-			this.sceneManager.segueTo(scene);
+			sceneManager.segueTo(scene);
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(-1);

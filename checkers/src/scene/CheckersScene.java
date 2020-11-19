@@ -22,12 +22,14 @@ import subscene.SubScenes;
 
 public abstract class CheckersScene extends Scene {
 	private AnchorPane pane;
+	protected SceneManager sceneManager;
 	
 	/**
 	 * Initialize a new JavaFX scene object.
 	 */
-	public CheckersScene () {
+	public CheckersScene (SceneManager sceneManager) {
 		super(new AnchorPane(), Configs.WINDOW_WIDTH, Configs.WINDOW_HEIGHT);
+		this.sceneManager = sceneManager;
 		this.pane = (AnchorPane) this.getRoot();
 	}
 	
@@ -50,8 +52,36 @@ public abstract class CheckersScene extends Scene {
 	}
 	
 	public abstract void segueToSubScene(SubScenes subScene) throws Exception;
-	
 	public abstract void segueToScene(Scenes scene);
+	
+	public void setSettings (String playerOneName, String playerTwoName, boolean isSinglePlayer) {
+		this.sceneManager.setSettings(playerOneName, playerTwoName, isSinglePlayer);
+	}
+	
+	public void setWinner(String playerNameWhoWon, long timeElapsed) {
+		this.sceneManager.setWinner(playerNameWhoWon, timeElapsed);
+		
+	}
+
+	public String getPlayerOneName() {
+		return this.sceneManager.getPlayerOneName();
+	}
+
+	public String getPlayerTwoName() {
+		return this.sceneManager.getPlayerTwoName();
+	}
+
+	public String getPlayerWhoWonName() {
+		return this.sceneManager.getPlayerWhoWonName();
+	}
+
+	public boolean getIsSinglePlayer() {
+		return this.sceneManager.getIsSinglePlayer();
+	}
+
+	public long getTimeElapsed() {
+		return this.sceneManager.getTimeElapsed();
+	}
 	
 	/**
 	 * Add a JavaFX Node to the scene.

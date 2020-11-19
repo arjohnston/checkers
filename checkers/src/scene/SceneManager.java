@@ -19,6 +19,13 @@ public class SceneManager {
 	private GameScene gameScene;
 	private Stage stage;
 	
+	// Some global variables passed around scene's
+	private String playerOneName;
+	private String playerTwoName;
+	private boolean isSinglePlayer;
+	private long timeElapsed;
+	private String playerNameWhoWon;
+	
 	/**
 	 * Create a stage (window) and initialize the scene manager.
 	 * 
@@ -55,6 +62,37 @@ public class SceneManager {
 		default:
 			throw new Exception("Invalid segue: " + scene);
 		}
+	}
+	
+	public void setSettings (String playerOneName, String playerTwoName, boolean isSinglePlayer) {
+		this.playerOneName = playerOneName;
+		this.playerTwoName = playerTwoName;
+		this.isSinglePlayer = isSinglePlayer;
+	}
+	
+	public void setWinner (String playerNameWhoWon, long timeElapsed) {
+		this.playerNameWhoWon = playerNameWhoWon;
+		this.timeElapsed = timeElapsed;
+	}
+	
+	public String getPlayerOneName () {
+		return this.playerOneName;
+	}
+	
+	public String getPlayerTwoName () {
+		return this.playerTwoName;
+	}
+	
+	public String getPlayerWhoWonName () {
+		return this.playerNameWhoWon;
+	}
+	
+	public long getTimeElapsed () {
+		return this.timeElapsed;
+	}
+	
+	public boolean getIsSinglePlayer () {
+		return this.isSinglePlayer;
 	}
 
 	/**

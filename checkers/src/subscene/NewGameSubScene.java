@@ -227,6 +227,9 @@ public class NewGameSubScene extends CheckersSubScene {
 			@Override
 			public void handle(ActionEvent event) {
 				try {
+					// TODO: This is silly data below, but we should replace "Bob" with the actual Player 1 name
+					scene.setSettings("Bob", null, true);
+
 					scene.segueToScene(Scenes.GAME);
 					segueToSubScene(SubScenes.MAIN_MENU);
 				} catch (Exception e) {
