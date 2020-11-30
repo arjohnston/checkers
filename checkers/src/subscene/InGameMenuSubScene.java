@@ -87,7 +87,10 @@ public class InGameMenuSubScene extends CheckersSubScene {
 			@Override
 			public void handle(ActionEvent event) {
 				try {
-					//segueToSubScene(SubScenes.WINNING_CONDITION);
+					// Return the state back to the game board
+					segueToSubScene(SubScenes.GAME_BOARD);
+					
+					// And segue to the menu scene
 					scene.segueToScene(Scenes.MENU);
 				} catch (Exception e) {
 					e.printStackTrace();

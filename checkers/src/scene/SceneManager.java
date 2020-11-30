@@ -52,6 +52,7 @@ public class SceneManager {
 		
 		switch (scene) {
 		case GAME:
+			gameScene.startGame();
 			stage.setScene(gameScene);
 			break;
 			
