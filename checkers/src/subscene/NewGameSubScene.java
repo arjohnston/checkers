@@ -26,6 +26,7 @@ import scene.Scenes;
 
 public class NewGameSubScene extends CheckersSubScene {
 	private CheckersScene scene;
+	private String playerName;
 	/**
 	 * Initialize new game sub-scene.
 	 * @param scene CheckersScene
@@ -163,6 +164,10 @@ public class NewGameSubScene extends CheckersSubScene {
 			yourNameField.setFont(Font.font("Verdana", 30));
 		}
 		
+		yourNameField.setOnKeyTyped(event -> {
+			playerName = yourNameField.getText();
+		});
+		
 		add(yourNameField);
 	}
 	
@@ -227,11 +232,13 @@ public class NewGameSubScene extends CheckersSubScene {
 			@Override
 			public void handle(ActionEvent event) {
 				try {
-					// TODO: This is silly data below, but we should replace "Bob" with the actual Player 1 name
-					scene.setSettings("Bob", null, true);
-
-					scene.segueToScene(Scenes.GAME);
-					segueToSubScene(SubScenes.MAIN_MENU);
+					// Verify that a name was entered, then start the game
+					if (playerName != null && !playerName.isEmpty()) {
+						scene.setSettings(playerName, null, true);
+						
+						scene.segueToScene(Scenes.GAME);
+						segueToSubScene(SubScenes.MAIN_MENU);
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 					System.exit(-1);

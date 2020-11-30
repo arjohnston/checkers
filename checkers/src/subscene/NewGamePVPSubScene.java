@@ -13,8 +13,12 @@ import javafx.scene.text.Font;
 import javafx.util.Duration;
 import application.Configs;
 import scene.CheckersScene;
+import scene.Scenes;
 
 public class NewGamePVPSubScene extends CheckersSubScene {
+	private CheckersScene scene;
+	private String playerOneName;
+	private String playerTwoName;
 
 	public NewGamePVPSubScene(CheckersScene scene) {
 		super(scene);
@@ -24,6 +28,8 @@ public class NewGamePVPSubScene extends CheckersSubScene {
 		createNameTexts();
 		createPlayerFields();
 		createStartButton();
+		
+		this.scene = scene;
 	}
 	
 	/**
@@ -142,6 +148,14 @@ public class NewGamePVPSubScene extends CheckersSubScene {
 			p2NameField.setFont(Font.font("Verdana", 30));
 		}
 		
+		p1NameField.setOnKeyTyped(event -> {
+			playerOneName = p1NameField.getText();
+		});
+		
+		p2NameField.setOnKeyTyped(event -> {
+			playerTwoName = p2NameField.getText();
+		});
+		
 		add(p1NameField);
 		add(p2NameField);
 	}
@@ -176,9 +190,14 @@ public class NewGamePVPSubScene extends CheckersSubScene {
 			@Override
 			public void handle(ActionEvent event) {
 				try {
-					// Temp code, but will segue to Game scene in the future
-					segueToSubScene(SubScenes.MAIN_MENU);
-					//sceneManager.segueTo(Scenes.GAME);
+					// Verify that the fields are filled, and then start the game
+					if (playerOneName != null && playerTwoName != null &&
+						!playerOneName.isEmpty() && !playerTwoName.isEmpty()) {
+						scene.setSettings(playerOneName, playerTwoName, false);
+						
+						scene.segueToScene(Scenes.GAME);
+						segueToSubScene(SubScenes.MAIN_MENU);
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 					System.exit(-1);
