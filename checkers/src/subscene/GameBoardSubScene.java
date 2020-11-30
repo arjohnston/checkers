@@ -3,6 +3,8 @@ package subscene;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 
 import application.Configs;
 import gui.CheckersButton;
@@ -46,6 +48,8 @@ public class GameBoardSubScene extends CheckersSubScene {
 	private ImageView gamePieceImageSelected;
 	private ImageView highlightedSpace;
 	
+	private List<ImageView> gameBoardImages;
+	
 	/**
 	 * Initialize the sub-scene.
 	 * @param scene CheckersScene
@@ -55,6 +59,7 @@ public class GameBoardSubScene extends CheckersSubScene {
 		
 		this.scene = scene;
 		
+		gameBoardImages = new ArrayList<ImageView>();
 		setup();
 	}
 	
@@ -68,6 +73,7 @@ public class GameBoardSubScene extends CheckersSubScene {
 		}
 		
 		GameTimer.reset();
+		resetGameboard();
 		
 		isSinglePlayer = scene.getIsSinglePlayer();
 		playerOneName = scene.getPlayerOneName();
@@ -77,11 +83,18 @@ public class GameBoardSubScene extends CheckersSubScene {
 		startTimer();
 	}
 	
+	private void resetGameboard () {
+		for (ImageView image : gameBoardImages) {
+			remove(image);
+		}
+		
+		initializeGameBoard();
+	}
+	
 	private void setup () {
 		initializeImages();
 		initializeText();
 		createMenuButton();
-		initializeGameBoard();
 	}
 	
 	private void initializeImages () {
@@ -183,6 +196,7 @@ public class GameBoardSubScene extends CheckersSubScene {
 					});
 					
 					add(space);
+					gameBoardImages.add(space);
 				}
 				
 				if (gameBoard[i][j] == 1) {
@@ -200,6 +214,7 @@ public class GameBoardSubScene extends CheckersSubScene {
 					});
 					
 					add(playerOnePiece);
+					gameBoardImages.add(playerOnePiece);
 				}
 				
 				// put the game pieces down for player 2
@@ -218,6 +233,7 @@ public class GameBoardSubScene extends CheckersSubScene {
 					});
 					
 					add(playerTwoPiece);
+					gameBoardImages.add(playerTwoPiece);
 				}
 			}
 			
@@ -227,6 +243,7 @@ public class GameBoardSubScene extends CheckersSubScene {
 			border.setLayoutX(238);
 			border.setLayoutY(98);
 			add(border);
+			gameBoardImages.add(border);
 		}
 	}
 	
