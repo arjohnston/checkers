@@ -3,6 +3,7 @@ package application;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import scene.SceneManager;
+import utils.GameTimer;
 
 /**
  * The main application class for the Checkers game. This file is required and cannot
@@ -37,5 +38,14 @@ public class CheckersApp extends Application {
 	 */
 	public static void main(String[] args) {
 		launch(args);
+	}
+	
+	/**
+	 * Clean up the Java timer when closing. Omitting this will leave an open
+	 * thread.
+	 */
+	@Override
+	public void stop() {
+		GameTimer.cleanUp();
 	}
 }

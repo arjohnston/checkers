@@ -39,6 +39,10 @@ public abstract class CheckersSubScene extends SubScene {
 		pane.getChildren().add(e);
 	}
 	
+	public void remove (Node e) {
+		pane.getChildren().remove(e);
+	}
+	
 	/**
 	 * Transition from one sub-scene to a target sub-scene
 	 * @param subScene SubScenes enum: The sub-scene to transition to

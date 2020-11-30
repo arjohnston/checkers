@@ -7,6 +7,7 @@ import application.Configs;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
@@ -31,6 +32,15 @@ public class CheckersButton extends Button {
 		setText(label);
 		super.getStyleClass().add("menu-button");
 		this.buttonSize = ButtonSizes.LARGE;
+		
+		initializeButtonListeners();
+		setStyles();
+	}
+	
+	public CheckersButton (ImageView image) {
+		setGraphic(image);
+		super.getStyleClass().add("menu-button");
+		this.buttonSize = ButtonSizes.SMALL;
 		
 		initializeButtonListeners();
 		setStyles();
