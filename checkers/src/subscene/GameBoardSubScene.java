@@ -6,6 +6,9 @@ import java.io.FileNotFoundException;
 
 import application.Configs;
 import gui.CheckersButton;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -39,7 +42,8 @@ public class GameBoardSubScene extends CheckersSubScene {
 	
 	private int playerTurn;
 	
-	private Vector2i gamePieceSelected;
+	private Vector2i gamePieceCoordSelected;
+	private ImageView gamePieceImageSelected;
 	private ImageView highlightedSpace;
 	
 	/**
@@ -100,7 +104,9 @@ public class GameBoardSubScene extends CheckersSubScene {
 	
 	private void changeToPlayersTurn (Integer player) {
 		playerTurn = player;
-		gamePieceSelected = null;
+		gamePieceCoordSelected = null;
+		gamePieceImageSelected = null;
+		highlightedSpace = null;
 		
 		if (player == 1) {
 			title.setText(playerOneName + "'s Turn");
@@ -160,7 +166,6 @@ public class GameBoardSubScene extends CheckersSubScene {
 				gameBoard[i][7] = 2;
 			}
 			
-			
 			for (int j = 0; j < 8; j++) {
 				int x = i;
 				int y = j; 
@@ -173,25 +178,26 @@ public class GameBoardSubScene extends CheckersSubScene {
 					space.setLayoutY(100 + j * 75); // 100 constant value to push the game board down 100px from the top, preserving 20px padding on bottom
 					
 					space.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-						onClick(new Vector2i(x, y));
+						onClick(new Vector2i(x, y), null);
 						event.consume();
 					});
 					
 					add(space);
 				}
 				
-				// Put the game pieces down for player 1. The 240 + 7 is to center the piece in the game space, since
-				// the game pieces are 60px wide, or 15px difference from the playable space. So floor(15 / 2) = 7
 				if (gameBoard[i][j] == 1) {
 					ImageView playerOnePiece = new ImageView("file:resources/player-1-piece.png");
-					playerOnePiece.setLayoutX(247 + i * 75); 
-					playerOnePiece.setLayoutY(107 + j * 75);
+					playerOnePiece.setLayoutX(240 + i * 75); 
+					playerOnePiece.setLayoutY(100 + j * 75);
+					playerOnePiece.setPickOnBounds(true); // allows clicking on transparent part of PNG
+					playerOnePiece.setViewOrder(-1.0);
 					
 					playerOnePiece.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-						onClick(new Vector2i(x, y));
+						int playerOnePieceXCoord = (int) ((playerOnePiece.getLayoutX() - 240) / 75);
+						int playerOnePieceYCoord = (int) ((playerOnePiece.getLayoutY() - 100) / 75);
+						onClick(new Vector2i(playerOnePieceXCoord, playerOnePieceYCoord), playerOnePiece);
 						event.consume();
 					});
-					
 					
 					add(playerOnePiece);
 				}
@@ -199,11 +205,15 @@ public class GameBoardSubScene extends CheckersSubScene {
 				// put the game pieces down for player 2
 				if (gameBoard[i][j] == 2) {
 					ImageView playerTwoPiece = new ImageView("file:resources/player-2-piece.png");
-					playerTwoPiece.setLayoutX(247 + i * 75); 
-					playerTwoPiece.setLayoutY(107 + j * 75);
+					playerTwoPiece.setLayoutX(240 + i * 75); 
+					playerTwoPiece.setLayoutY(100 + j * 75);
+					playerTwoPiece.setPickOnBounds(true); // allows clicking on transparent part of PNG
+					playerTwoPiece.setViewOrder(-1.0);
 					
 					playerTwoPiece.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-						onClick(new Vector2i(x, y));
+						int playerTwoPieceXCoord = (int) ((playerTwoPiece.getLayoutX() - 240) / 75);
+						int playerTwoPieceYCoord = (int) ((playerTwoPiece.getLayoutY() - 100) / 75);
+						onClick(new Vector2i(playerTwoPieceXCoord, playerTwoPieceYCoord), playerTwoPiece);
 						event.consume();
 					});
 					
@@ -240,21 +250,38 @@ public class GameBoardSubScene extends CheckersSubScene {
 	 * then select it (e.g. piece that we're going to move). Then subsequent selections
 	 * should be where the piece will move to.
 	 */
-	private void onClick (Vector2i coord) {
-		System.out.println("Clicked on: (" + coord.x + ", " + coord.y + ")");
+	private void onClick (Vector2i coord, ImageView playerPiece) {
 		if (CheckersLogic.isSelectable(gameBoard, playerTurn, coord)) {
-			gamePieceSelected = coord;
-			
-			if (highlightedSpace != null) {
-				remove(highlightedSpace);
-				highlightedSpace = null;
-			}
+			// If a player piece is already selected and now we're trying to move
+			if (gamePieceCoordSelected != null && playerPiece == null) {
+				// take the game piece at the x,y and move its coords to the new coord
+				gamePieceImageSelected.setLayoutX(240 + coord.x * 75);
+				gamePieceImageSelected.setLayoutY(100 + coord.y * 75);
+				
+				// remove selection
+				gamePieceCoordSelected = null;
+				gamePieceImageSelected = null;
+				
+				// remove the highlight
+				if (highlightedSpace != null) {
+					remove(highlightedSpace);
+					highlightedSpace = null;
+				}
+			} else if (playerPiece != null) {
+				gamePieceCoordSelected = coord;
+				gamePieceImageSelected = playerPiece;
+				
+				if (highlightedSpace != null) {
+					remove(highlightedSpace);
+					highlightedSpace = null;
+				}
 
-			highlightedSpace = new ImageView("file:resources/space-highlight.png");
-			highlightedSpace.setLayoutX(240 + coord.x * 75); 
-			highlightedSpace.setLayoutY(100 + coord.y * 75);
-			
-			add(highlightedSpace);
+				highlightedSpace = new ImageView("file:resources/space-highlight.png");
+				highlightedSpace.setLayoutX(playerPiece.getLayoutX()); 
+				highlightedSpace.setLayoutY(playerPiece.getLayoutY());
+				
+				add(highlightedSpace);
+			}
 		}
 	}
 	
