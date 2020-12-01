@@ -284,6 +284,9 @@ public class GameBoardSubScene extends CheckersSubScene {
 					remove(highlightedSpace);
 					highlightedSpace = null;
 				}
+				
+				// TODO REMOVE! Very temporary win condition...
+				if (coord.x == 7 && coord.y == 7) endGame();
 			} else if (playerPiece != null) {
 				gamePieceCoordSelected = coord;
 				gamePieceImageSelected = playerPiece;
@@ -300,6 +303,12 @@ public class GameBoardSubScene extends CheckersSubScene {
 				add(highlightedSpace);
 			}
 		}
+	}
+	
+	private void endGame () {
+		GameTimer.pause();
+		scene.setWinner(playerOneName, GameTimer.getTimeElapsedInSeconds());
+		segueToSubScene(SubScenes.WIN_CONDITION);
 	}
 	
 

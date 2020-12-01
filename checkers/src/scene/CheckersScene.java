@@ -55,8 +55,8 @@ public abstract class CheckersScene extends Scene {
 	public abstract void segueToSubScene(SubScenes subScene) throws Exception;
 	public abstract void segueToScene(Scenes scene);
 	
-	public void setSettings (String playerOneName, String playerTwoName, boolean isSinglePlayer) {
-		this.sceneManager.setSettings(playerOneName, playerTwoName, isSinglePlayer);
+	public void setSettings (String playerOneName, String playerTwoName, boolean isSinglePlayer, GameDifficulty gameDifficulty) {
+		this.sceneManager.setSettings(playerOneName, playerTwoName, isSinglePlayer, gameDifficulty);
 	}
 	
 	public void setWinner(String playerNameWhoWon, long timeElapsed) {

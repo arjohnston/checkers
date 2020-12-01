@@ -11,10 +11,12 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
 import scene.CheckersScene;
+import scene.GameDifficulty;
 import scene.Scenes;
 
 /**
@@ -27,6 +29,9 @@ import scene.Scenes;
 public class NewGameSubScene extends CheckersSubScene {
 	private CheckersScene scene;
 	private String playerName;
+	private GameDifficulty gameDifficulty;
+	private TextField yourNameField;
+	
 	/**
 	 * Initialize new game sub-scene.
 	 * @param scene CheckersScene
@@ -42,6 +47,7 @@ public class NewGameSubScene extends CheckersSubScene {
 		createDifficultyButtons();
 		createStartButton();
 		
+		gameDifficulty = GameDifficulty.MEDIUM;
 		this.scene = scene;
 	}
 	
@@ -49,7 +55,8 @@ public class NewGameSubScene extends CheckersSubScene {
 	 * Create a back button to the main menu sub-scene.
 	 */
 	private void createBackButton () {
-		CheckersButton button = new CheckersButton("BACK", CheckersButton.ButtonSizes.MEDIUM);
+		CheckersButton button = new CheckersButton(" BACK", CheckersButton.ButtonSizes.MEDIUM);
+		button.setGraphic(new ImageView("file:resources/chevron-left.png"));
 		
 		button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -95,7 +102,6 @@ public class NewGameSubScene extends CheckersSubScene {
 			public void handle(ActionEvent event) {
 				try {
 					segueToSubScene(SubScenes.NEW_GAME_PVP);
-					//sceneManager.segueTo(Scenes.GAME);
 				} catch (Exception e) {
 					e.printStackTrace();
 					System.exit(-1);
@@ -150,7 +156,7 @@ public class NewGameSubScene extends CheckersSubScene {
 	 * Creates the name entry field
 	 */
 	private void createYourNameField () {
-		TextField yourNameField = new TextField();
+		yourNameField = new TextField();
 		
 		yourNameField.getStyleClass().add("name-text-field");
 		
@@ -191,6 +197,7 @@ public class NewGameSubScene extends CheckersSubScene {
 			easy.setStyle("-fx-border-color: lightgreen;"
 					+ " -fx-text-fill: lightgreen;"
 					+ " -fx-alignment: center;");
+			gameDifficulty = GameDifficulty.EASY;
 		});
 		
 		medium.setOnMouseClicked(event -> {
@@ -199,6 +206,7 @@ public class NewGameSubScene extends CheckersSubScene {
 			medium.setStyle("-fx-border-color: lightgreen;"
 					+ " -fx-text-fill: lightgreen;"
 					+ " -fx-alignment: center;");
+			gameDifficulty = GameDifficulty.MEDIUM;
 		});
 		
 		hard.setOnMouseClicked(event -> {
@@ -207,6 +215,7 @@ public class NewGameSubScene extends CheckersSubScene {
 			hard.setStyle("-fx-border-color: lightgreen;"
 					+ " -fx-text-fill: lightgreen;"
 					+ " -fx-alignment: center;");
+			gameDifficulty = GameDifficulty.HARD;
 		});
 		
 		easy.setLayoutX(230);
@@ -218,8 +227,15 @@ public class NewGameSubScene extends CheckersSubScene {
 		hard.setLayoutX(670);
 		hard.setLayoutY(400);
 		
-		for(CheckersButton button : difficultyButtons)
+		// Set the medium button as default selection
+		medium.setStyle("-fx-border-color: lightgreen;"
+				+ " -fx-text-fill: lightgreen;"
+				+ " -fx-alignment: center;");
+		
+		for(CheckersButton button : difficultyButtons) {
 			add(button);
+		}
+			
 	}
 	
 	/**
@@ -234,7 +250,7 @@ public class NewGameSubScene extends CheckersSubScene {
 				try {
 					// Verify that a name was entered, then start the game
 					if (playerName != null && !playerName.isEmpty()) {
-						scene.setSettings(playerName, null, true);
+						scene.setSettings(playerName, null, true, gameDifficulty);
 						
 						scene.segueToScene(Scenes.GAME);
 						segueToSubScene(SubScenes.MAIN_MENU);
@@ -271,6 +287,10 @@ public class NewGameSubScene extends CheckersSubScene {
 		transition.setDuration(Duration.seconds(0.2));
 		transition.setNode(this);
 		transition.setToX(isSubSceneActive ? -Configs.WINDOW_WIDTH : Configs.WINDOW_WIDTH);
+		
+		if (isSubSceneActive) {
+			yourNameField.setText("");
+		}
 		
 		transition.play();
 	}

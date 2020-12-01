@@ -32,8 +32,10 @@ public class GameTimer {
 	}
 	
 	public static void cleanUp() {
-		timer.cancel();
-		timer.purge();
+		if (timer != null) {
+			timer.cancel();
+			timer.purge();
+		}
 	}
 	
 	public static long getTimeElapsedInSeconds () {

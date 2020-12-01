@@ -9,16 +9,20 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 import application.Configs;
 import scene.CheckersScene;
+import scene.GameDifficulty;
 import scene.Scenes;
 
 public class NewGamePVPSubScene extends CheckersSubScene {
 	private CheckersScene scene;
 	private String playerOneName;
 	private String playerTwoName;
+	private TextField p1NameField;
+	private TextField p2NameField;
 
 	public NewGamePVPSubScene(CheckersScene scene) {
 		super(scene);
@@ -36,7 +40,8 @@ public class NewGamePVPSubScene extends CheckersSubScene {
 	 * Create a back button to the main menu sub-scene.
 	 */
 	private void createBackButton () {
-		CheckersButton button = new CheckersButton("BACK", CheckersButton.ButtonSizes.MEDIUM);
+		CheckersButton button = new CheckersButton(" BACK", CheckersButton.ButtonSizes.MEDIUM);
+		button.setGraphic(new ImageView("file:resources/chevron-left.png"));
 		
 		button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -126,8 +131,8 @@ public class NewGamePVPSubScene extends CheckersSubScene {
 	 * Creates the name entry fields for both players
 	 */
 	private void createPlayerFields () {
-		TextField p1NameField = new TextField();
-		TextField p2NameField = new TextField();
+		p1NameField = new TextField();
+		p2NameField = new TextField();
 		
 		p1NameField.getStyleClass().add("name-text-field");
 		p2NameField.getStyleClass().add("name-text-field");
@@ -193,7 +198,7 @@ public class NewGamePVPSubScene extends CheckersSubScene {
 					// Verify that the fields are filled, and then start the game
 					if (playerOneName != null && playerTwoName != null &&
 						!playerOneName.isEmpty() && !playerTwoName.isEmpty()) {
-						scene.setSettings(playerOneName, playerTwoName, false);
+						scene.setSettings(playerOneName, playerTwoName, false, null);
 						
 						scene.segueToScene(Scenes.GAME);
 						segueToSubScene(SubScenes.MAIN_MENU);
@@ -216,6 +221,11 @@ public class NewGamePVPSubScene extends CheckersSubScene {
 		transition.setDuration(Duration.seconds(0.2));
 		transition.setNode(this);
 		transition.setToX(isSubSceneActive ? -Configs.WINDOW_WIDTH : Configs.WINDOW_WIDTH);
+		
+		if (isSubSceneActive) {
+			p1NameField.setText("");
+			p2NameField.setText("");
+		}
 		
 		transition.play();
 	}

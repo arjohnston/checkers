@@ -13,6 +13,7 @@ import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -175,7 +176,8 @@ public class HighScoresSubScene extends CheckersSubScene {
 	 * back to the main-menu.
 	 */
 	private void createBackButton () {
-		CheckersButton button = new CheckersButton("BACK", CheckersButton.ButtonSizes.MEDIUM);
+		CheckersButton button = new CheckersButton(" BACK", CheckersButton.ButtonSizes.MEDIUM);
+		button.setGraphic(new ImageView("file:resources/chevron-left.png"));
 		
 		button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override

@@ -110,7 +110,8 @@ public class HowToPlaySubScene extends CheckersSubScene {
 	 */
 	
 	private void createBackButton () {
-		CheckersButton button = new CheckersButton("BACK", CheckersButton.ButtonSizes.MEDIUM);
+		CheckersButton button = new CheckersButton(" BACK", CheckersButton.ButtonSizes.MEDIUM);
+		button.setGraphic(new ImageView("file:resources/chevron-left.png"));
 		
 		button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override

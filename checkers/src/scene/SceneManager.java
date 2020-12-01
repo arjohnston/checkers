@@ -23,6 +23,7 @@ public class SceneManager {
 	private String playerOneName;
 	private String playerTwoName;
 	private boolean isSinglePlayer;
+	private GameDifficulty gameDifficulty;
 	private long timeElapsed;
 	private String playerNameWhoWon;
 	
@@ -65,10 +66,11 @@ public class SceneManager {
 		}
 	}
 	
-	public void setSettings (String playerOneName, String playerTwoName, boolean isSinglePlayer) {
+	public void setSettings (String playerOneName, String playerTwoName, boolean isSinglePlayer, GameDifficulty gameDifficulty) {
 		this.playerOneName = playerOneName;
 		this.playerTwoName = playerTwoName;
 		this.isSinglePlayer = isSinglePlayer;
+		this.gameDifficulty = gameDifficulty;
 	}
 	
 	public void setWinner (String playerNameWhoWon, long timeElapsed) {
@@ -94,6 +96,10 @@ public class SceneManager {
 	
 	public boolean getIsSinglePlayer () {
 		return this.isSinglePlayer;
+	}
+	
+	public GameDifficulty getGameDifficulty () {
+		return this.gameDifficulty;
 	}
 
 	/**

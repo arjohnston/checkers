@@ -9,6 +9,7 @@ import java.util.List;
 import application.Configs;
 import gui.CheckersButton;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -19,6 +20,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import scene.CheckersScene;
 import scene.Scenes;
+import utils.GameTimer;
 
 public class InGameMenuSubScene extends CheckersSubScene {
 	private CheckersScene scene;
@@ -27,6 +29,9 @@ public class InGameMenuSubScene extends CheckersSubScene {
 	
 	private static final int MENU_BUTTON_STARTING_POS_X = 100;
 	private static final int MENU_BUTTON_STARTING_POS_Y = 150;
+	
+	private long timeElapsedInSeconds;
+	private Label timerLabel;
 
 	public InGameMenuSubScene(CheckersScene scene) {
 		super(scene);
@@ -35,7 +40,9 @@ public class InGameMenuSubScene extends CheckersSubScene {
 		createButtons();
 		setHeader();
 		setLogo();
+		setTimer();
 		
+		timeElapsedInSeconds = 0;
 		this.scene = scene;
 	}
 	private void setHeader () {
@@ -52,11 +59,45 @@ public class InGameMenuSubScene extends CheckersSubScene {
 		
 		add(header);
 	}
+	
 	private void setLogo () {
 		ImageView logo = new ImageView("file:resources/logo.png");
 		logo.setLayoutX(Configs.WINDOW_WIDTH - 375);
 		logo.setLayoutY(Configs.WINDOW_HEIGHT - 300);
 		add(logo);
+		
+		
+	}
+	
+	private void setTimer () {
+		timerLabel = new Label("5:03");
+		timerLabel.getStyleClass().add("paragraph");
+		
+		timerLabel.setLayoutX(950);
+		timerLabel.setLayoutY(55);
+		
+		try {
+			timerLabel.setFont(Font.loadFont(new FileInputStream(Configs.Font.MONTSERRAT_REGULAR), 30));
+		} catch (FileNotFoundException e) {
+			timerLabel.setFont(Font.font("Verdana", 30));
+		}
+		
+		add(timerLabel);
+		
+		ImageView timerImage = new ImageView("file:resources/timer.png");
+		timerImage.setLayoutX(900); 
+		timerImage.setLayoutY(50);
+		add(timerImage);
+	}
+	
+	private void updateTimer () {
+		timeElapsedInSeconds = GameTimer.getTimeElapsedInSeconds();
+		Integer minutes = (int) Math.floor(timeElapsedInSeconds / 60);
+		Integer seconds = (int) (timeElapsedInSeconds % 60);
+		
+		String secString = seconds < 10 ? "0" + seconds : seconds.toString();
+		
+		Platform.runLater(() -> timerLabel.setText(minutes + ":" + secString));
 	}
 
 	private void createButtons() {
@@ -115,6 +156,8 @@ public class InGameMenuSubScene extends CheckersSubScene {
 		transition.setDuration(Duration.seconds(0.2));
 		transition.setNode(this);
 		transition.setToX(isSubSceneActive ? -Configs.WINDOW_WIDTH : Configs.WINDOW_WIDTH);
+		
+		if (isSubSceneActive) updateTimer();
 		
 		transition.play();
 	}
