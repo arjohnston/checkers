@@ -24,15 +24,13 @@ import utils.JsonFileIO;
 /**
  * Subscene to handle the view for the high scores menu.
  * 
- * TODO: Add back arrow to the left of the text as shown in the design. This should
- * be across all back arrows.
- * 
  * @author Andrew Johnston
  *
  */
 
 public class HighScoresSubScene extends CheckersSubScene {
 	private Map<Long, String> highScores;
+	private VBox content;
 
 	/**
 	 * Initialize the high score subscene
@@ -95,7 +93,7 @@ public class HighScoresSubScene extends CheckersSubScene {
 	 */
 	private void setTableContent () {
 		// if no content available, display no content, otherwise loop through and set each row up to 10
-		VBox content = new VBox();
+		content = new VBox();
 		content.setLayoutX(275);
 		content.setLayoutY(180);
 		
@@ -129,18 +127,17 @@ public class HighScoresSubScene extends CheckersSubScene {
 	}
 	
 	/**
-	 * Convert the given milliseconds into minutes and seconds.
-	 * @param milliseconds Milliseconds to be converted
+	 * Convert the given seconds into minutes and seconds.
+	 * @param seconds Seconds to be converted
 	 * @return String of MM:SS
 	 */
-	private String convertToTimeStamp (long milliseconds) {
-		int minutes = (int) Math.floor((milliseconds / 1000) / 60);
-		int seconds = (int) ((milliseconds / 1000) % 60);
+	private String convertToTimeStamp (long seconds) {		
+		Integer min = (int) Math.floor(seconds / 60);
+		Integer sec = (int) (seconds % 60);
 		
-		String minString = minutes < 9 ? "0" + minutes : Integer.toString(minutes);
-		String secString = seconds < 9 ? seconds + "0" : Integer.toString(seconds);
+		String secString = sec < 10 ? "0" + sec : sec.toString();
 		
-		return minString + ":" + secString;
+		return min + ":" + secString;
 	}
 	
 	/**
@@ -202,6 +199,12 @@ public class HighScoresSubScene extends CheckersSubScene {
 		transition.setDuration(Duration.seconds(0.2));
 		transition.setNode(this);
 		transition.setToX(isSubSceneActive ? -Configs.WINDOW_WIDTH : Configs.WINDOW_WIDTH);
+		
+		if (isSubSceneActive) {
+			remove(content);
+			this.highScores = JsonFileIO.load();
+			setTableContent();
+		}
 		
 		transition.play();
 	}

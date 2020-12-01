@@ -15,9 +15,6 @@ import javafx.scene.text.Font;
 /**
  * This class handles the logic for a button on the main menu.
  * 
- * TODO: Add an opacity transition when hovering. E.g. in CSS:
- * transition: 0.2s 
- * 
  * @author Andrew Johnston
  *
  */

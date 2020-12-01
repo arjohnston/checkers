@@ -65,8 +65,6 @@ public class InGameMenuSubScene extends CheckersSubScene {
 		logo.setLayoutX(Configs.WINDOW_WIDTH - 375);
 		logo.setLayoutY(Configs.WINDOW_HEIGHT - 300);
 		add(logo);
-		
-		
 	}
 	
 	private void setTimer () {
@@ -104,6 +102,7 @@ public class InGameMenuSubScene extends CheckersSubScene {
 		ResumeButton();
 		ForfeitButton();
 	}
+	
 	private void ResumeButton() {
 		CheckersButton button = new CheckersButton("RESUME");
 		
@@ -121,6 +120,7 @@ public class InGameMenuSubScene extends CheckersSubScene {
 		
 		addMenuButton(button);
 	}
+	
 	private void ForfeitButton() {
 		CheckersButton button = new CheckersButton("FORFEIT GAME");
 		

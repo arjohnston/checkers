@@ -1,6 +1,5 @@
 package subscene;
 
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -8,9 +7,6 @@ import java.util.List;
 
 import application.Configs;
 import gui.CheckersButton;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -83,6 +79,9 @@ public class GameBoardSubScene extends CheckersSubScene {
 		startTimer();
 	}
 	
+	/**
+	 * Reset the gameboard to its original state. Clean up all images and re-initialize them.
+	 */
 	private void resetGameboard () {
 		for (ImageView image : gameBoardImages) {
 			remove(image);
@@ -91,12 +90,18 @@ public class GameBoardSubScene extends CheckersSubScene {
 		initializeGameBoard();
 	}
 	
+	/**
+	 * Initially set up the game board.
+	 */
 	private void setup () {
 		initializeImages();
 		initializeText();
 		createMenuButton();
 	}
 	
+	/**
+	 * Initialize the static images to the game board (e.g. timer).
+	 */
 	private void initializeImages () {
 		ImageView timerImage = new ImageView("file:resources/timer.png");
 		timerImage.setLayoutX(50); 
@@ -104,6 +109,9 @@ public class GameBoardSubScene extends CheckersSubScene {
 		add(timerImage);
 	}
 	
+	/**
+	 * Initialize the static text to the game board.
+	 */
 	private void initializeText () {
 		title = createLabel("", 0, 20, true, "header", 52);
 		add(title);
@@ -115,6 +123,10 @@ public class GameBoardSubScene extends CheckersSubScene {
 		add(timerLabel);
 	}
 	
+	/**
+	 * Change the player turn from the current player to the specified one.
+	 * @param player Integer (1 or 2)
+	 */
 	private void changeToPlayersTurn (Integer player) {
 		playerTurn = player;
 		gamePieceCoordSelected = null;
@@ -131,6 +143,16 @@ public class GameBoardSubScene extends CheckersSubScene {
 		}
 	}
 	
+	/**
+	 * Utility function to condense the creation of labels.
+	 * @param text String
+	 * @param x Integer x-coordinate
+	 * @param y Integer y-coordinate
+	 * @param maxWidth Boolean if it should fill the max-width of the screen
+	 * @param className String
+	 * @param fontSize Integer
+	 * @return Label
+	 */
 	private Label createLabel (String text, Integer x, Integer y, boolean maxWidth, String className, Integer fontSize) {
 		Label label = new Label(text);
 		label.getStyleClass().add(className);
@@ -149,6 +171,9 @@ public class GameBoardSubScene extends CheckersSubScene {
 		return label;
 	}
 	
+	/**
+	 * Create an empty gameboard with the images and event handlers.
+	 */
 	private void initializeGameBoard () {
 		gameBoard = new int[8][8]; // Checkers has a 8x8 game board configuration
 		
@@ -247,6 +272,10 @@ public class GameBoardSubScene extends CheckersSubScene {
 		}
 	}
 	
+	/**
+	 * Update the timer each second.
+	 * @param timeElapsedInSeconds Long
+	 */
 	private void updateTimerText (long timeElapsedInSeconds) {
 		Integer minutes = (int) Math.floor(timeElapsedInSeconds / 60);
 		Integer seconds = (int) (timeElapsedInSeconds % 60);
@@ -305,6 +334,9 @@ public class GameBoardSubScene extends CheckersSubScene {
 		}
 	}
 	
+	/**
+	 * End the game, presumably during a win-condition step.
+	 */
 	private void endGame () {
 		GameTimer.pause();
 		scene.setWinner(playerOneName, GameTimer.getTimeElapsedInSeconds());

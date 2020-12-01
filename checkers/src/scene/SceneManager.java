@@ -66,6 +66,13 @@ public class SceneManager {
 		}
 	}
 	
+	/**
+	 * Save the global settings for a new game.
+	 * @param playerOneName String
+	 * @param playerTwoName String
+	 * @param isSinglePlayer Boolean
+	 * @param gameDifficulty GameDifficulty Enum
+	 */
 	public void setSettings (String playerOneName, String playerTwoName, boolean isSinglePlayer, GameDifficulty gameDifficulty) {
 		this.playerOneName = playerOneName;
 		this.playerTwoName = playerTwoName;
@@ -73,31 +80,60 @@ public class SceneManager {
 		this.gameDifficulty = gameDifficulty;
 	}
 	
+	/**
+	 * Set the name and time of the winner upon a game completion
+	 * @param playerNameWhoWon String
+	 * @param timeElapsed Long
+	 */
 	public void setWinner (String playerNameWhoWon, long timeElapsed) {
 		this.playerNameWhoWon = playerNameWhoWon;
 		this.timeElapsed = timeElapsed;
 	}
 	
+	/**
+	 * Get the player one name
+	 * @return String
+	 */
 	public String getPlayerOneName () {
 		return this.playerOneName;
 	}
 	
+	/**
+	 * Get the player two name
+	 * @return String
+	 */
 	public String getPlayerTwoName () {
 		return this.playerTwoName;
 	}
 	
+	/**
+	 * Get the player name who won
+	 * @return String
+	 */
 	public String getPlayerWhoWonName () {
 		return this.playerNameWhoWon;
 	}
 	
+	/**
+	 * Get the timer elapsed
+	 * @return Long
+	 */
 	public long getTimeElapsed () {
 		return this.timeElapsed;
 	}
 	
+	/**
+	 * Get whether or not the game is set up for single player vs PvP
+	 * @return Boolean
+	 */
 	public boolean getIsSinglePlayer () {
 		return this.isSinglePlayer;
 	}
 	
+	/**
+	 * Get the game difficulty
+	 * @return GameDifficulty Enum
+	 */
 	public GameDifficulty getGameDifficulty () {
 		return this.gameDifficulty;
 	}

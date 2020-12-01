@@ -11,6 +11,11 @@ public class Vector2i {
 	public Integer x;
 	public Integer y;
 
+	/**
+	 * Initialize with a x,y coordinate
+	 * @param x Integer
+	 * @param y Integer
+	 */
 	public Vector2i (int x, int y) {
 		this.x = x;
 		this.y = y;

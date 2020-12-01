@@ -39,6 +39,10 @@ public abstract class CheckersSubScene extends SubScene {
 		pane.getChildren().add(e);
 	}
 	
+	/**
+	 * Remove a JavaFX Node from the scene.
+	 * @param e JavaFX Node
+	 */
 	public void remove (Node e) {
 		pane.getChildren().remove(e);
 	}

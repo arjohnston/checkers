@@ -5,7 +5,6 @@ import subscene.GameBoardSubScene;
 import subscene.InGameMenuSubScene;
 import subscene.SubScenes;
 import subscene.WinConditionSubScene;
-import utils.GameTimer;
 
 /**
  * Scene handler for the game play itself. The checker board, in-game menu should
@@ -33,6 +32,9 @@ public class GameScene extends CheckersScene {
 		setup();
 	}
 	
+	/**
+	 * Segue to the GameBoard and start the game.
+	 */
 	public void startGame() {
 		// Ensure we're on the right subscene
 		try {

@@ -4,7 +4,6 @@ import application.Configs;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
@@ -52,34 +51,76 @@ public abstract class CheckersScene extends Scene {
 		this.pane.setBackground(new Background(background));
 	}
 	
+	/**
+	 * Segue to a subscene as long as it is initialized in the callers scene.
+	 * @param subScene The SubScene to transition to
+	 * @throws Exception If the SubScene is not initialized, an exception will be thrown.
+	 */
 	public abstract void segueToSubScene(SubScenes subScene) throws Exception;
+	
+	/**
+	 * Segue to a different scene, defined in the Enum class Scenes.
+	 * @param scene Enum Scenes
+	 */
 	public abstract void segueToScene(Scenes scene);
 	
+	/**
+	 * Set the global settings when configuring a new game.
+	 * @param playerOneName String
+	 * @param playerTwoName String
+	 * @param isSinglePlayer Boolean
+	 * @param gameDifficulty GameDifficulty Enum of easy, medium, hard
+	 */
 	public void setSettings (String playerOneName, String playerTwoName, boolean isSinglePlayer, GameDifficulty gameDifficulty) {
 		this.sceneManager.setSettings(playerOneName, playerTwoName, isSinglePlayer, gameDifficulty);
 	}
 	
+	/**
+	 * Set the winner of a game upon game completion.
+	 * @param playerNameWhoWon String
+	 * @param timeElapsed Long time in seconds.
+	 */
 	public void setWinner(String playerNameWhoWon, long timeElapsed) {
 		this.sceneManager.setWinner(playerNameWhoWon, timeElapsed);
 		
 	}
 
+	/**
+	 * Get the player one name from settings.
+	 * @return String
+	 */
 	public String getPlayerOneName() {
 		return this.sceneManager.getPlayerOneName();
 	}
 
+	/**
+	 * Get the player two name from settings.
+	 * @return String
+	 */
 	public String getPlayerTwoName() {
 		return this.sceneManager.getPlayerTwoName();
 	}
 
+	/**
+	 * Get the players name who won the game.
+	 * @return String
+	 */
 	public String getPlayerWhoWonName() {
 		return this.sceneManager.getPlayerWhoWonName();
 	}
 
+	/**
+	 * Check if the game is single player or PvP.
+	 * @return Boolean
+	 */
 	public boolean getIsSinglePlayer() {
 		return this.sceneManager.getIsSinglePlayer();
 	}
 
+	/**
+	 * Get the current amount of time elapsed in seconds.
+	 * @return Long
+	 */
 	public long getTimeElapsed() {
 		return this.sceneManager.getTimeElapsed();
 	}

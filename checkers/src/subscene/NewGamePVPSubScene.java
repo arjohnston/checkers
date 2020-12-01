@@ -32,6 +32,7 @@ public class NewGamePVPSubScene extends CheckersSubScene {
 		createNameTexts();
 		createPlayerFields();
 		createStartButton();
+		createImages();
 		
 		this.scene = scene;
 	}
@@ -59,6 +60,18 @@ public class NewGamePVPSubScene extends CheckersSubScene {
 		button.setLayoutX(30);
 		button.setLayoutY(30);
 		add(button);
+	}
+	
+	private void createImages () {
+		ImageView playerOnePiece = new ImageView("file:resources/player-1-piece.png");
+		playerOnePiece.setLayoutX(850);
+		playerOnePiece.setLayoutY(182);
+		add(playerOnePiece);
+		
+		ImageView playerTwoPiece = new ImageView("file:resources/player-2-piece.png");
+		playerTwoPiece.setLayoutX(850);
+		playerTwoPiece.setLayoutY(382);
+		add(playerTwoPiece);
 	}
 	
 	/**
@@ -133,6 +146,9 @@ public class NewGamePVPSubScene extends CheckersSubScene {
 	private void createPlayerFields () {
 		p1NameField = new TextField();
 		p2NameField = new TextField();
+		
+		p1NameField.setPromptText("Andrew");
+		p2NameField.setPromptText("Vishnu");
 		
 		p1NameField.getStyleClass().add("name-text-field");
 		p2NameField.getStyleClass().add("name-text-field");

@@ -46,6 +46,7 @@ public class NewGameSubScene extends CheckersSubScene {
 		createDifficultyText();
 		createDifficultyButtons();
 		createStartButton();
+		createImages();
 		
 		gameDifficulty = GameDifficulty.MEDIUM;
 		this.scene = scene;
@@ -74,6 +75,13 @@ public class NewGameSubScene extends CheckersSubScene {
 		button.setLayoutX(30);
 		button.setLayoutY(30);
 		add(button);
+	}
+	
+	private void createImages () {
+		ImageView playerOnePiece = new ImageView("file:resources/player-1-piece.png");
+		playerOnePiece.setLayoutX(850);
+		playerOnePiece.setLayoutY(182);
+		add(playerOnePiece);
 	}
 	
 	/**
@@ -157,6 +165,7 @@ public class NewGameSubScene extends CheckersSubScene {
 	 */
 	private void createYourNameField () {
 		yourNameField = new TextField();
+		yourNameField.setPromptText("Shaion");
 		
 		yourNameField.getStyleClass().add("name-text-field");
 		
