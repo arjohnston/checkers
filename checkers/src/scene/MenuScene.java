@@ -27,7 +27,6 @@ public class MenuScene extends CheckersScene {
 	private CheckersSubScene highScores;
 	private CheckersSubScene howToPlay;
 	private CheckersSubScene newGamePVP;
-	private CheckersSubScene winCondition;
 	
 	/**
 	 * Initialize the scene with a reference to the scene manager class so
@@ -62,8 +61,6 @@ public class MenuScene extends CheckersScene {
 		newGamePVP = new NewGamePVPSubScene(this);
 		add(newGamePVP);
 		
-		winCondition = new WinConditionSubScene(this);
-		add(winCondition);
 		
 		activeScene = mainMenu;
 	}
@@ -93,9 +90,6 @@ public class MenuScene extends CheckersScene {
 			segueTo = newGamePVP;
 			break;
 			
-		case WIN_CONDITION:
-			segueTo = winCondition;
-			break;
 			
 		default:
 			throw new Exception("Invalid Segue: " + subScene.toString());

@@ -1,6 +1,138 @@
 package utils;
 
+import java.util.ArrayList;
+
 public class CheckersLogic {
+	
+	private int[][] gameBoard;
+	
+	public CheckersLogic(){
+		initializeGameBoard();
+	}
+	
+	private void initializeGameBoard () {
+		gameBoard = new int[8][8]; // Checkers has a 8x8 game board configuration
+		
+		// 0  : space is empty
+		// 1  : space has a player 1 piece
+		// 2  : space has a player 2 piece
+		// 11 : stacked player 1 piece (queen/king)
+		// 22 : stacked player 2 piece (queen/king)
+		// -1 : space is invalid (cannot move to this space)
+		for (int i = 0; i < 8; i++) {
+			if (i == 0 || i % 2 == 0) {
+				gameBoard[i][0] = 1;
+				gameBoard[i][1] = -1;
+				gameBoard[i][2] = 1;
+				gameBoard[i][3] = -1;
+				gameBoard[i][4] = 0;
+				gameBoard[i][5] = -1;
+				gameBoard[i][6] = 2;
+				gameBoard[i][7] = -1;
+			} else {
+				gameBoard[i][0] = -1;
+				gameBoard[i][1] = 1;
+				gameBoard[i][2] = -1;
+				gameBoard[i][3] = 0;
+				gameBoard[i][4] = -1;
+				gameBoard[i][5] = 2;
+				gameBoard[i][6] = -1;
+				gameBoard[i][7] = 2;
+			}	
+		}
+	}
+	
+	protected int getWhitePiecesCount()
+	{
+		int count = 0;
+		for(int[] s:gameBoard)
+		{
+			for(int isValue:s)
+			{
+				if(isValue==1)
+				{
+					count++;
+				}
+			}
+		}
+		return count;
+	}
+	
+	protected int getBlackPiecesCount()
+	{
+		int count = 0;
+		for(int[] s:gameBoard)
+		{
+			for(int isValue:s)
+			{
+				if(isValue==2)
+				{
+					count++;
+				}
+			}
+		}
+		return count;
+	}
+	
+	protected int getWhiteKingsCount()
+	{
+		int count = 0;
+		for(int[] s:gameBoard)
+		{
+			for(int isValue:s)
+			{
+				if(isValue==11)
+				{
+					count++;
+				}
+			}
+		}
+		return count;
+	}
+	
+	protected int getBlackKingsCount()
+	{
+		int count = 0;
+		for(int[] s:gameBoard)
+		{
+			for(int isValue:s)
+			{
+				if(isValue==22)
+				{
+					count++;
+				}
+			}
+		}
+		return count;
+	}
+	
+	protected ArrayList<Vector2i> getAllMoves(Vector2i coord)
+	{		
+		ArrayList<Vector2i> moves = new ArrayList<Vector2i>();
+		for(int i=0; i<8; i++)
+		{
+			for(int j=0; j<8; j++)
+			{
+				if(gameBoard[i][j] ==0)
+				{
+					try {
+						if(canMove(coord, new Vector2i(i, j)))
+						{
+							moves.add(new Vector2i(i, j));
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+						System.exit(-1);
+					}
+				}
+			}
+		}
+		return moves;
+		
+		
+		
+	}
+	
 	/**
 	 * Checks whether or not the space is selectable by the current player (e.g. their gamepiece)
 	 * 
@@ -9,8 +141,16 @@ public class CheckersLogic {
 	 * @param coord The x, y coordinate of the space being selected by the current player.
 	 * @return boolean
 	 */
-	public static boolean isSelectable (int[][] gameBoard, int playerTurn, Vector2i coord) {
-		return true;
+	public boolean isSelectable (int playerTurn, Vector2i coord) {
+		if(playerTurn ==1)
+		{
+			return gameBoard[coord.x][coord.y] ==1 || gameBoard[coord.x][coord.y] ==11;
+		}
+		else if(playerTurn ==2)
+		{
+			return gameBoard[coord.x][coord.y]==2 || gameBoard[coord.x][coord.y]==22;
+		}
+		return false;
 	}
 
 	/**
@@ -26,8 +166,123 @@ public class CheckersLogic {
 	 * @return boolean if its a valid move
 	 * @throws Exception if the from or to vectors land outside the gameBoard size
 	 */
-	public static boolean canMove (int[][] gameBoard, Vector2i from, Vector2i to) throws Exception {
-		return true;
+	public boolean canMove (Vector2i from, Vector2i to) throws Exception {
+		if(from.x<0 ||from.y<0||to.x<0||to.y<0||from.x>7||from.y>7||to.x>7||to.y>7)
+		{
+			throw new Exception("Selected space is outside gameboard");
+		}
+		
+		if(gameBoard[from.x][from.y] ==1)
+		{
+			if(to.y > from.y)
+			{
+				if(gameBoard[to.x][to.y]==0)
+				{
+					if(to.y-from.y ==1 && Math.abs(to.x-from.x)==1)
+					{
+						return true;
+					}
+					else if(to.y-from.y ==2 && Math.abs(to.x-from.x)==2)
+					{
+						if(to.x>from.x)
+						{
+							return gameBoard[from.x+1][from.y+1] ==2 || gameBoard[from.x+1][from.y+1] ==22;
+						}
+						else {
+							return gameBoard[from.x-1][from.y+1] ==2 || gameBoard[from.x-1][from.y+1] ==22;
+						}
+					}
+				}
+			}
+		}
+		else if(gameBoard[from.x][from.y] ==11)
+		{
+			if(to.y != from.y)
+			{
+				if(gameBoard[to.x][to.y]==0)
+				{
+					if(Math.abs(to.y-from.y) ==1 && Math.abs(to.x-from.x)==1)
+					{
+						return true;
+					}
+					else if(Math.abs(to.y-from.y) ==2 && Math.abs(to.x-from.x)==2)
+					{
+						if(to.x>from.x && to.y>from.y)
+						{
+							return gameBoard[from.x+1][from.y+1] ==2 || gameBoard[from.x+1][from.y+1] ==22;
+						}
+						else if(to.x<from.x && to.y>from.y)
+						{
+							return gameBoard[from.x-1][from.y+1] ==2 || gameBoard[from.x-1][from.y+1] ==22;
+						}
+						else if(to.x>from.x && to.y<from.y)
+						{
+							return gameBoard[from.x+1][from.y-1] ==2 || gameBoard[from.x+1][from.y-1] ==22;
+						}
+						else if(to.x<from.x && to.y<from.y)
+						{
+							return gameBoard[from.x-1][from.y-1] ==2 || gameBoard[from.x-1][from.y-1] ==22;
+						}
+					}
+				}
+			}
+		}
+		else if(gameBoard[from.x][from.y] ==2)
+		{
+			if(to.y < from.y)
+			{
+				if(gameBoard[to.x][to.y]==0)
+				{
+					if(from.y-to.y ==1 && Math.abs(to.x-from.x)==1)
+					{
+						return true;
+					}
+					else if(from.y-to.y ==2 && Math.abs(to.x-from.x)==2)
+					{
+						if(to.x>from.x)
+						{
+							return gameBoard[from.x+1][from.y-1] ==1 || gameBoard[from.x+1][from.y-1] ==11;
+						}
+						else {
+							return gameBoard[from.x-1][from.y-1] ==1 || gameBoard[from.x-1][from.y-1] ==11;
+						}
+					}
+				}
+			}
+		}
+		else if(gameBoard[from.x][from.y] ==22)
+		{
+			if(to.y != from.y)
+			{
+				if(gameBoard[to.x][to.y]==0)
+				{
+					if(Math.abs(to.y-from.y) ==1 && Math.abs(to.x-from.x)==1)
+					{
+						return true;
+					}
+					else if(Math.abs(to.y-from.y) ==2 && Math.abs(to.x-from.x)==2)
+					{
+						if(to.x>from.x && to.y>from.y)
+						{
+							return gameBoard[from.x+1][from.y+1] ==1 || gameBoard[from.x+1][from.y+1] ==11;
+						}
+						else if(to.x<from.x && to.y>from.y)
+						{
+							return gameBoard[from.x-1][from.y+1] ==1 || gameBoard[from.x-1][from.y+1] ==11;
+						}
+						else if(to.x>from.x && to.y<from.y)
+						{
+							return gameBoard[from.x+1][from.y-1] ==1 || gameBoard[from.x+1][from.y-1] ==11;
+						}
+						else if(to.x<from.x && to.y<from.y)
+						{
+							return gameBoard[from.x-1][from.y-1] ==1 || gameBoard[from.x-1][from.y-1] ==11;
+						}
+					}
+				}
+			}
+		}		
+		return false;
 	}
 	
 	/**
@@ -41,8 +296,21 @@ public class CheckersLogic {
 	 * @return an updated gameBoard
 	 * @throws Exception If the values are out of range or the move is invalid
 	 */
-	public static int[][] move (int[][] gameBoard, Vector2i gamePiece, Vector2i[] moves) throws Exception {
-		return gameBoard;
+	public void move (Vector2i gamePiece, ArrayList<Vector2i> moves) throws Exception 
+	{
+		if(gameBoard[gamePiece.x][gamePiece.y] ==0)
+		{
+			try {
+				if(canMove(gamePiece, moves.get(0)))
+				{
+					gameBoard[moves.get(0).x][moves.get(0).y] = gameBoard[gamePiece.x][gamePiece.y];
+					gameBoard[gamePiece.x][gamePiece.y]=0;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.exit(-1);
+			}
+		}
 	}
 	
 	/**
@@ -52,7 +320,17 @@ public class CheckersLogic {
 	 * @param gameBoard The gameboard with its current state
 	 * @return Whether or not the game is over
 	 */
-	public static boolean hasWonGame (int[][] gameBoard) {
-		return false;
+	public int hasWonGame () {
+		if(getWhitePiecesCount()+ getWhiteKingsCount()<=0)
+		{
+			return 2;
+		}
+		else if(getBlackPiecesCount()+ getBlackKingsCount()<=0)
+		{
+			return 1;
+		}
+		else {
+			return -1;
+		}
 	}
 }
