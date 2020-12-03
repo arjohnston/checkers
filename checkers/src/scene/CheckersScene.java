@@ -126,6 +126,14 @@ public abstract class CheckersScene extends Scene {
 	}
 	
 	/**
+	 * Returns the GameDifficulty
+	 * @return GameDifficulty enum.
+	 */
+	public GameDifficulty getGameDifficulty () {
+		return this.sceneManager.getGameDifficulty();
+	}
+	
+	/**
 	 * Add a JavaFX Node to the scene.
 	 * @param e JavaFX Node
 	 */

@@ -3,7 +3,9 @@ package subscene;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import application.Configs;
 import gui.CheckersButton;
@@ -17,6 +19,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 import scene.CheckersScene;
+import scene.GameDifficulty;
+import utils.CheckersAI;
+import utils.CheckersAIReturn;
 import utils.CheckersLogic;
 import utils.GameTimer;
 import utils.Vector2i;
@@ -44,7 +49,12 @@ public class GameBoardSubScene extends CheckersSubScene {
 	private ImageView gamePieceImageSelected;
 	private ImageView highlightedSpace;
 	
-	private List<ImageView> gameBoardImages;
+	private Map<Vector2i, ImageView> gameBoardImages;
+	private Map<String, ImageView> gameBoardPieces;
+	
+	private CheckersLogic checkersLogic;
+	
+	private GameDifficulty gameDifficulty;
 	
 	/**
 	 * Initialize the sub-scene.
@@ -55,7 +65,10 @@ public class GameBoardSubScene extends CheckersSubScene {
 		
 		this.scene = scene;
 		
-		gameBoardImages = new ArrayList<ImageView>();
+		checkersLogic = new CheckersLogic();
+//		gameBoardImages = new ArrayList<ImageView>();
+		gameBoardImages = new HashMap<Vector2i, ImageView>();
+		gameBoardPieces = new HashMap<String, ImageView>();
 		setup();
 	}
 	
@@ -69,11 +82,13 @@ public class GameBoardSubScene extends CheckersSubScene {
 		}
 		
 		GameTimer.reset();
+		checkersLogic.reset();
 		resetGameboard();
 		
 		isSinglePlayer = scene.getIsSinglePlayer();
 		playerOneName = scene.getPlayerOneName();
 		playerTwoName = scene.getPlayerTwoName();
+		gameDifficulty = scene.getGameDifficulty();
 		
 		changeToPlayersTurn(1);
 		startTimer();
@@ -83,8 +98,13 @@ public class GameBoardSubScene extends CheckersSubScene {
 	 * Reset the gameboard to its original state. Clean up all images and re-initialize them.
 	 */
 	private void resetGameboard () {
-		for (ImageView image : gameBoardImages) {
-			remove(image);
+//		for (ImageView image : gameBoardImages) {
+		for (Map.Entry<Vector2i, ImageView> entry : gameBoardImages.entrySet()) {
+			remove(entry.getValue());
+		}
+		
+		for (Map.Entry<String, ImageView> entry : gameBoardPieces.entrySet()) {
+			remove(entry.getValue());
 		}
 		
 		initializeGameBoard();
@@ -137,7 +157,16 @@ public class GameBoardSubScene extends CheckersSubScene {
 			title.setText(playerOneName + "'s Turn");
 		} else if (player == 2 && isSinglePlayer) {
 			title.setText("Opponent's Turn");
-			// TODO do some AI stuff
+			
+			// TODO implement this...
+			//CheckersAIReturn aiMove = checkersLogic.moveAI(gameDifficulty);
+			
+			//System.out.println(gameBoardPieces.get(aiMove.getFrom().toString()));
+			//gamePieceImageSelected = gameBoardPieces.get(aiMove.getFrom().toString());
+			//gamePieceCoordSelected = aiMove.getFrom();
+			//updateGameBoard(aiMove.getTo(), aiMove.getJumped()[0]);
+
+			//changeToPlayersTurn(1);
 		} else {
 			title.setText(playerTwoName + "'s Turn");
 		}
@@ -175,35 +204,9 @@ public class GameBoardSubScene extends CheckersSubScene {
 	 * Create an empty gameboard with the images and event handlers.
 	 */
 	private void initializeGameBoard () {
-		gameBoard = new int[8][8]; // Checkers has a 8x8 game board configuration
-		
-		// 0  : space is empty
-		// 1  : space has a player 1 piece
-		// 2  : space has a player 2 piece
-		// 11 : stacked player 1 piece (queen/king)
-		// 22 : stacked player 2 piece (queen/king)
-		// -1 : space is invalid (cannot move to this space)
+		int[][] gameBoard = checkersLogic.getGameBoard();
+	
 		for (int i = 0; i < 8; i++) {
-			if (i == 0 || i % 2 == 0) {
-				gameBoard[i][0] = 1;
-				gameBoard[i][1] = -1;
-				gameBoard[i][2] = 1;
-				gameBoard[i][3] = -1;
-				gameBoard[i][4] = 0;
-				gameBoard[i][5] = -1;
-				gameBoard[i][6] = 2;
-				gameBoard[i][7] = -1;
-			} else {
-				gameBoard[i][0] = -1;
-				gameBoard[i][1] = 1;
-				gameBoard[i][2] = -1;
-				gameBoard[i][3] = 0;
-				gameBoard[i][4] = -1;
-				gameBoard[i][5] = 2;
-				gameBoard[i][6] = -1;
-				gameBoard[i][7] = 2;
-			}
-			
 			for (int j = 0; j < 8; j++) {
 				int x = i;
 				int y = j; 
@@ -221,14 +224,14 @@ public class GameBoardSubScene extends CheckersSubScene {
 					});
 					
 					add(space);
-					gameBoardImages.add(space);
+					gameBoardImages.put(new Vector2i(i, j), space);
 				}
 				
 				if (gameBoard[i][j] == 1) {
 					ImageView playerOnePiece = new ImageView("file:resources/player-1-piece.png");
 					playerOnePiece.setLayoutX(240 + i * 75); 
 					playerOnePiece.setLayoutY(100 + j * 75);
-					playerOnePiece.setPickOnBounds(true); // allows clicking on transparent part of PNG
+					setPickOnBounds(true); // allows clicking on transparent part of PNG
 					playerOnePiece.setViewOrder(-1.0);
 					
 					playerOnePiece.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
@@ -239,7 +242,7 @@ public class GameBoardSubScene extends CheckersSubScene {
 					});
 					
 					add(playerOnePiece);
-					gameBoardImages.add(playerOnePiece);
+					gameBoardPieces.put(new Vector2i(i, j).toString(), playerOnePiece);
 				}
 				
 				// put the game pieces down for player 2
@@ -258,7 +261,7 @@ public class GameBoardSubScene extends CheckersSubScene {
 					});
 					
 					add(playerTwoPiece);
-					gameBoardImages.add(playerTwoPiece);
+					gameBoardPieces.put(new Vector2i(i, j).toString(), playerTwoPiece);
 				}
 			}
 			
@@ -268,7 +271,7 @@ public class GameBoardSubScene extends CheckersSubScene {
 			border.setLayoutX(238);
 			border.setLayoutY(98);
 			add(border);
-			gameBoardImages.add(border);
+			gameBoardImages.put(null, border);
 		}
 	}
 	
@@ -297,26 +300,35 @@ public class GameBoardSubScene extends CheckersSubScene {
 	 * should be where the piece will move to.
 	 */
 	private void onClick (Vector2i coord, ImageView playerPiece) {
-		if (CheckersLogic.isSelectable(gameBoard, playerTurn, coord)) {
-			// If a player piece is already selected and now we're trying to move
-			if (gamePieceCoordSelected != null && playerPiece == null) {
-				// take the game piece at the x,y and move its coords to the new coord
-				gamePieceImageSelected.setLayoutX(240 + coord.x * 75);
-				gamePieceImageSelected.setLayoutY(100 + coord.y * 75);
+		if (gamePieceCoordSelected != null && playerPiece == null) {
+			// take the game piece at the x,y and move its coords to the new coord
+			try {
+				ArrayList<Vector2i> moves = new ArrayList<Vector2i>();
+				moves.add(coord);
 				
-				// remove selection
-				gamePieceCoordSelected = null;
-				gamePieceImageSelected = null;
+				Vector2i movePiece = checkersLogic.move(gamePieceCoordSelected, moves);
 				
-				// remove the highlight
-				if (highlightedSpace != null) {
-					remove(highlightedSpace);
-					highlightedSpace = null;
+				if (movePiece != null) {
+					updatePieceImage(gamePieceCoordSelected, coord);
+					updateGameBoard(coord, gamePieceCoordSelected != movePiece ? movePiece : null);
+					
+					int checkForWinningPlayer = checkersLogic.hasWonGame();
+					
+					if (checkForWinningPlayer > 0) {
+						endGame(checkForWinningPlayer);
+					} else {
+						changeToPlayersTurn(playerTurn == 1 ? 2 : 1);
+					}
+					
 				}
-				
-				// TODO REMOVE! Very temporary win condition...
-				if (coord.x == 7 && coord.y == 7) endGame();
-			} else if (playerPiece != null) {
+			} catch (Exception e) {
+				System.out.println("Not a valid move, try again!");
+			}
+		}
+		
+		if (checkersLogic.isSelectable(playerTurn, coord)) {
+			// If a player piece is already selected and now we're trying to move
+			 if (playerPiece != null) {
 				gamePieceCoordSelected = coord;
 				gamePieceImageSelected = playerPiece;
 				
@@ -334,15 +346,47 @@ public class GameBoardSubScene extends CheckersSubScene {
 		}
 	}
 	
+	private void updatePieceImage (Vector2i from, Vector2i to) {
+		gameBoardPieces.put(to.toString(), gameBoardPieces.get(from.toString()));
+		gameBoardPieces.remove(from.toString());
+	}
+	
+	private void updateGameBoard (Vector2i to, Vector2i jumpedPiece) {
+		this.gameBoard = checkersLogic.getGameBoard();
+		
+		// TODO should use this so we can update the AI
+//		gameBoardPieces.get(from.toString()).setLayoutX(240 + to.x * 75);
+//		gameBoardPieces.get(from.toString()).setLayoutY(240 + to.y * 75);
+
+		gamePieceImageSelected.setLayoutX(240 + to.x * 75);
+		gamePieceImageSelected.setLayoutY(100 + to.y * 75);
+		
+		if (jumpedPiece != null) {
+			remove(gameBoardPieces.get(jumpedPiece.toString()));
+		}
+		
+		// remove selection
+		gamePieceCoordSelected = null;
+		gamePieceImageSelected = null;
+		
+		// remove the highlight
+		if (highlightedSpace != null) {
+			remove(highlightedSpace);
+			highlightedSpace = null;
+		}
+	}
+	
 	/**
 	 * End the game, presumably during a win-condition step.
 	 */
-	private void endGame () {
+	private void endGame (int playerWhoWon) {
 		GameTimer.pause();
-		scene.setWinner(playerOneName, GameTimer.getTimeElapsedInSeconds());
+		if (!isSinglePlayer) {
+			scene.setWinner(playerWhoWon == 1 ? playerOneName : playerTwoName, GameTimer.getTimeElapsedInSeconds());
+		}
+		scene.setWinner(playerWhoWon == 1 ? playerOneName : playerTwoName, GameTimer.getTimeElapsedInSeconds());
 		segueToSubScene(SubScenes.WIN_CONDITION);
 	}
-	
 
 	/**
 	 * Initialize a placeholder menu button to transition to the in-game menu

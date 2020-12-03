@@ -2,11 +2,23 @@ package utils;
 
 import java.util.ArrayList;
 
+import scene.GameDifficulty;
+
+/**
+ * 
+ * TODO
+ * Logic for become a king!
+ *
+ */
+
 public class CheckersLogic {
-	
 	private int[][] gameBoard;
 	
 	public CheckersLogic(){
+		initializeGameBoard();
+	}
+	
+	public void reset () {
 		initializeGameBoard();
 	}
 	
@@ -40,6 +52,10 @@ public class CheckersLogic {
 				gameBoard[i][7] = 2;
 			}	
 		}
+	}
+	
+	public int[][] getGameBoard () {
+		return this.gameBoard;
 	}
 	
 	protected int getWhitePiecesCount()
@@ -116,7 +132,7 @@ public class CheckersLogic {
 				if(gameBoard[i][j] ==0)
 				{
 					try {
-						if(canMove(coord, new Vector2i(i, j)))
+						if(canMove(coord, new Vector2i(i, j)) != null)
 						{
 							moves.add(new Vector2i(i, j));
 						}
@@ -128,9 +144,6 @@ public class CheckersLogic {
 			}
 		}
 		return moves;
-		
-		
-		
 	}
 	
 	/**
@@ -166,7 +179,7 @@ public class CheckersLogic {
 	 * @return boolean if its a valid move
 	 * @throws Exception if the from or to vectors land outside the gameBoard size
 	 */
-	public boolean canMove (Vector2i from, Vector2i to) throws Exception {
+	public Vector2i canMove (Vector2i from, Vector2i to) throws Exception {
 		if(from.x<0 ||from.y<0||to.x<0||to.y<0||from.x>7||from.y>7||to.x>7||to.y>7)
 		{
 			throw new Exception("Selected space is outside gameboard");
@@ -180,16 +193,16 @@ public class CheckersLogic {
 				{
 					if(to.y-from.y ==1 && Math.abs(to.x-from.x)==1)
 					{
-						return true;
+						return from;
 					}
 					else if(to.y-from.y ==2 && Math.abs(to.x-from.x)==2)
 					{
 						if(to.x>from.x)
 						{
-							return gameBoard[from.x+1][from.y+1] ==2 || gameBoard[from.x+1][from.y+1] ==22;
+							return gameBoard[from.x+1][from.y+1] ==2 || gameBoard[from.x+1][from.y+1] ==22 ? new Vector2i(from.x + 1, from.y + 1) : null;
 						}
 						else {
-							return gameBoard[from.x-1][from.y+1] ==2 || gameBoard[from.x-1][from.y+1] ==22;
+							return gameBoard[from.x-1][from.y+1] ==2 || gameBoard[from.x-1][from.y+1] ==22 ? new Vector2i(from.x - 1, from.y + 1) : null;
 						}
 					}
 				}
@@ -203,25 +216,25 @@ public class CheckersLogic {
 				{
 					if(Math.abs(to.y-from.y) ==1 && Math.abs(to.x-from.x)==1)
 					{
-						return true;
+						return from;
 					}
 					else if(Math.abs(to.y-from.y) ==2 && Math.abs(to.x-from.x)==2)
 					{
 						if(to.x>from.x && to.y>from.y)
 						{
-							return gameBoard[from.x+1][from.y+1] ==2 || gameBoard[from.x+1][from.y+1] ==22;
+							return gameBoard[from.x+1][from.y+1] ==2 || gameBoard[from.x+1][from.y+1] ==22 ? new Vector2i(from.x + 1, from.y + 1) : null;
 						}
 						else if(to.x<from.x && to.y>from.y)
 						{
-							return gameBoard[from.x-1][from.y+1] ==2 || gameBoard[from.x-1][from.y+1] ==22;
+							return gameBoard[from.x-1][from.y+1] ==2 || gameBoard[from.x-1][from.y+1] ==22 ? new Vector2i(from.x - 1, from.y + 1) : null;
 						}
 						else if(to.x>from.x && to.y<from.y)
 						{
-							return gameBoard[from.x+1][from.y-1] ==2 || gameBoard[from.x+1][from.y-1] ==22;
+							return gameBoard[from.x+1][from.y-1] ==2 || gameBoard[from.x+1][from.y-1] ==22 ? new Vector2i(from.x + 1, from.y - 1) : null;
 						}
 						else if(to.x<from.x && to.y<from.y)
 						{
-							return gameBoard[from.x-1][from.y-1] ==2 || gameBoard[from.x-1][from.y-1] ==22;
+							return gameBoard[from.x-1][from.y-1] ==2 || gameBoard[from.x-1][from.y-1] ==22 ? new Vector2i(from.x - 1, from.y - 1) : null;
 						}
 					}
 				}
@@ -235,16 +248,16 @@ public class CheckersLogic {
 				{
 					if(from.y-to.y ==1 && Math.abs(to.x-from.x)==1)
 					{
-						return true;
+						return from;
 					}
 					else if(from.y-to.y ==2 && Math.abs(to.x-from.x)==2)
 					{
 						if(to.x>from.x)
 						{
-							return gameBoard[from.x+1][from.y-1] ==1 || gameBoard[from.x+1][from.y-1] ==11;
+							return gameBoard[from.x+1][from.y-1] ==1 || gameBoard[from.x+1][from.y-1] ==11 ? new Vector2i(from.x + 1, from.y - 1) : null;
 						}
 						else {
-							return gameBoard[from.x-1][from.y-1] ==1 || gameBoard[from.x-1][from.y-1] ==11;
+							return gameBoard[from.x-1][from.y-1] ==1 || gameBoard[from.x-1][from.y-1] ==11 ? new Vector2i(from.x - 1, from.y - 1) : null;
 						}
 					}
 				}
@@ -258,31 +271,39 @@ public class CheckersLogic {
 				{
 					if(Math.abs(to.y-from.y) ==1 && Math.abs(to.x-from.x)==1)
 					{
-						return true;
+						return from;
 					}
 					else if(Math.abs(to.y-from.y) ==2 && Math.abs(to.x-from.x)==2)
 					{
 						if(to.x>from.x && to.y>from.y)
 						{
-							return gameBoard[from.x+1][from.y+1] ==1 || gameBoard[from.x+1][from.y+1] ==11;
+							return gameBoard[from.x+1][from.y+1] ==1 || gameBoard[from.x+1][from.y+1] ==11 ? new Vector2i(from.x + 1, from.y + 1) : null;
 						}
 						else if(to.x<from.x && to.y>from.y)
 						{
-							return gameBoard[from.x-1][from.y+1] ==1 || gameBoard[from.x-1][from.y+1] ==11;
+							return gameBoard[from.x-1][from.y+1] ==1 || gameBoard[from.x-1][from.y+1] ==11 ? new Vector2i(from.x - 1, from.y + 1) : null;
 						}
 						else if(to.x>from.x && to.y<from.y)
 						{
-							return gameBoard[from.x+1][from.y-1] ==1 || gameBoard[from.x+1][from.y-1] ==11;
+							return gameBoard[from.x+1][from.y-1] ==1 || gameBoard[from.x+1][from.y-1] ==11 ? new Vector2i(from.x + 1, from.y - 1) : null;
 						}
 						else if(to.x<from.x && to.y<from.y)
 						{
-							return gameBoard[from.x-1][from.y-1] ==1 || gameBoard[from.x-1][from.y-1] ==11;
+							return gameBoard[from.x-1][from.y-1] ==1 || gameBoard[from.x-1][from.y-1] ==11 ? new Vector2i(from.x - 1, from.y - 1) : null;
 						}
 					}
 				}
 			}
 		}		
-		return false;
+		return null;
+	}
+	
+	private boolean checkIfShouldBecomeKing (int playerTurn, Vector2i coord) {
+		if (playerTurn == 1) {
+			return coord.y == 7;
+		} else {
+			return coord.y == 0;
+		}
 	}
 	
 	/**
@@ -291,26 +312,48 @@ public class CheckersLogic {
 	 * as well as the ending location of all moved pieces.
 	 * 
 	 * @param gameBoard The current gameboard
-	 * @param gamePiece A Vector2i of the coordinates for the gamepiece that is being moved.
+	 * @param currentPiece A Vector2i of the coordinates for the gamepiece that is being moved.
 	 * @param moves Vector2i array of moves
 	 * @return an updated gameBoard
 	 * @throws Exception If the values are out of range or the move is invalid
 	 */
-	public void move (Vector2i gamePiece, ArrayList<Vector2i> moves) throws Exception 
+	public Vector2i move (Vector2i currentPiece, ArrayList<Vector2i> moves) throws Exception 
 	{
-		if(gameBoard[gamePiece.x][gamePiece.y] ==0)
+		if(gameBoard[moves.get(0).x][moves.get(0).y] ==0)
 		{
 			try {
-				if(canMove(gamePiece, moves.get(0)))
+				Vector2i move = canMove(currentPiece, moves.get(0));
+				if(move != null)
 				{
-					gameBoard[moves.get(0).x][moves.get(0).y] = gameBoard[gamePiece.x][gamePiece.y];
-					gameBoard[gamePiece.x][gamePiece.y]=0;
+					gameBoard[moves.get(0).x][moves.get(0).y] = gameBoard[currentPiece.x][currentPiece.y];
+					gameBoard[currentPiece.x][currentPiece.y]=0;
+					
+					if (move != currentPiece) removeGamePiece(move);
+					
+					return move;
+				} else {
+					return null;
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.exit(-1);
 			}
 		}
+		
+		return null;
+	}
+	
+	public CheckersAIReturn moveAI (GameDifficulty gameDifficulty) {
+		CheckersAIReturn aiMove = CheckersAI.move(gameBoard, gameDifficulty);
+		
+		gameBoard[aiMove.getTo().x][aiMove.getTo().y] = gameBoard[aiMove.getFrom().x][aiMove.getFrom().y];
+		gameBoard[aiMove.getFrom().x][aiMove.getFrom().y] = 0;
+		
+		return aiMove;
+	}
+	
+	private void removeGamePiece (Vector2i removeMe) {
+		gameBoard[removeMe.x][removeMe.y] = 0;
 	}
 	
 	/**

@@ -20,4 +20,12 @@ public class Vector2i {
 		this.x = x;
 		this.y = y;
 	}
+	
+	public String toString () {
+		return "(" + this.x + ", " + this.y + ")";
+	}
+	
+	public boolean equals(Vector2i vec2) {
+        return this.x == vec2.x && this.y == vec2.y;
+	}
 }
