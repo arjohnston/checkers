@@ -29,7 +29,7 @@ public class GameTimer {
 			@Override
             public void run() {
             	timeElapsedInSeconds += 1;
-            	callback.accept(timeElapsedInSeconds);
+            	if (callback != null) callback.accept(timeElapsedInSeconds);
             }
           }, 0, 1000);
 	}
