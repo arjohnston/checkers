@@ -1,11 +1,13 @@
 package utils;
 
+import java.util.ArrayList;
+
 public class CheckersAIReturn {
 	private Vector2i from;
 	private Vector2i to;
-	private Vector2i[] jumped;
+	private ArrayList<Vector2i> jumped;
 	
-	public CheckersAIReturn (Vector2i from, Vector2i to, Vector2i[] jumped) {
+	public CheckersAIReturn (Vector2i from, Vector2i to, ArrayList<Vector2i> jumped) {
 		this.from = from;
 		this.to = to;
 		this.jumped = jumped;
@@ -19,7 +21,7 @@ public class CheckersAIReturn {
 		return this.to;
 	}
 	
-	public Vector2i[] getJumped () {
+	public ArrayList<Vector2i> getJumped () {
 		return jumped;
 	}
 }

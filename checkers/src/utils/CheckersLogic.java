@@ -317,7 +317,7 @@ public class CheckersLogic {
 	 * @return an updated gameBoard
 	 * @throws Exception If the values are out of range or the move is invalid
 	 */
-	public Vector2i move (Vector2i currentPiece, ArrayList<Vector2i> moves) throws Exception 
+	public ArrayList<Vector2i> move (Vector2i currentPiece, ArrayList<Vector2i> moves)
 	{
 		if(gameBoard[moves.get(0).x][moves.get(0).y] ==0)
 		{
@@ -330,9 +330,13 @@ public class CheckersLogic {
 					
 					if (move != currentPiece) removeGamePiece(move);
 					
-					return move;
+					return new ArrayList<Vector2i>() {
+						private static final long serialVersionUID = 1L;
+						{
+							add(move);
+						}};
 				} else {
-					return null;
+					return new ArrayList<Vector2i>();
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -340,7 +344,7 @@ public class CheckersLogic {
 			}
 		}
 		
-		return null;
+		return new ArrayList<Vector2i>();
 	}
 	
 	public CheckersAIReturn moveAI (GameDifficulty gameDifficulty) {

@@ -66,7 +66,6 @@ public class GameBoardSubScene extends CheckersSubScene {
 		this.scene = scene;
 		
 		checkersLogic = new CheckersLogic();
-//		gameBoardImages = new ArrayList<ImageView>();
 		gameBoardImages = new HashMap<Vector2i, ImageView>();
 		gameBoardPieces = new HashMap<String, ImageView>();
 		setup();
@@ -98,7 +97,6 @@ public class GameBoardSubScene extends CheckersSubScene {
 	 * Reset the gameboard to its original state. Clean up all images and re-initialize them.
 	 */
 	private void resetGameboard () {
-//		for (ImageView image : gameBoardImages) {
 		for (Map.Entry<Vector2i, ImageView> entry : gameBoardImages.entrySet()) {
 			remove(entry.getValue());
 		}
@@ -158,15 +156,13 @@ public class GameBoardSubScene extends CheckersSubScene {
 		} else if (player == 2 && isSinglePlayer) {
 			title.setText("Opponent's Turn");
 			
-			// TODO implement this...
-			//CheckersAIReturn aiMove = checkersLogic.moveAI(gameDifficulty);
+			CheckersAIReturn aiMove = checkersLogic.moveAI(gameDifficulty);
 			
-			//System.out.println(gameBoardPieces.get(aiMove.getFrom().toString()));
-			//gamePieceImageSelected = gameBoardPieces.get(aiMove.getFrom().toString());
-			//gamePieceCoordSelected = aiMove.getFrom();
-			//updateGameBoard(aiMove.getTo(), aiMove.getJumped()[0]);
+			gamePieceImageSelected = gameBoardPieces.get(aiMove.getFrom().toString());
+			gamePieceCoordSelected = aiMove.getFrom();
+			updateGameBoard(aiMove.getTo(), aiMove.getJumped());
 
-			//changeToPlayersTurn(1);
+			changeToPlayersTurn(1);
 		} else {
 			title.setText(playerTwoName + "'s Turn");
 		}
@@ -302,15 +298,15 @@ public class GameBoardSubScene extends CheckersSubScene {
 	private void onClick (Vector2i coord, ImageView playerPiece) {
 		if (gamePieceCoordSelected != null && playerPiece == null) {
 			// take the game piece at the x,y and move its coords to the new coord
-			try {
+//			try {
 				ArrayList<Vector2i> moves = new ArrayList<Vector2i>();
 				moves.add(coord);
 				
-				Vector2i movePiece = checkersLogic.move(gamePieceCoordSelected, moves);
+				ArrayList<Vector2i> movePiece = checkersLogic.move(gamePieceCoordSelected, moves);
 				
-				if (movePiece != null) {
+				if (movePiece.size() > 0) {
 					updatePieceImage(gamePieceCoordSelected, coord);
-					updateGameBoard(coord, gamePieceCoordSelected != movePiece ? movePiece : null);
+					updateGameBoard(coord, movePiece);
 					
 					int checkForWinningPlayer = checkersLogic.hasWonGame();
 					
@@ -320,10 +316,9 @@ public class GameBoardSubScene extends CheckersSubScene {
 						changeToPlayersTurn(playerTurn == 1 ? 2 : 1);
 					}
 					
+				} else {
+					System.out.println("Not a valid move, try again!");
 				}
-			} catch (Exception e) {
-				System.out.println("Not a valid move, try again!");
-			}
 		}
 		
 		if (checkersLogic.isSelectable(playerTurn, coord)) {
@@ -351,7 +346,7 @@ public class GameBoardSubScene extends CheckersSubScene {
 		gameBoardPieces.remove(from.toString());
 	}
 	
-	private void updateGameBoard (Vector2i to, Vector2i jumpedPiece) {
+	private void updateGameBoard (Vector2i to, ArrayList<Vector2i> jumpedPieces) {
 		this.gameBoard = checkersLogic.getGameBoard();
 		
 		// TODO should use this so we can update the AI
@@ -361,8 +356,8 @@ public class GameBoardSubScene extends CheckersSubScene {
 		gamePieceImageSelected.setLayoutX(240 + to.x * 75);
 		gamePieceImageSelected.setLayoutY(100 + to.y * 75);
 		
-		if (jumpedPiece != null) {
-			remove(gameBoardPieces.get(jumpedPiece.toString()));
+		if (jumpedPieces.size() > 0) {
+			remove(gameBoardPieces.get(jumpedPieces.get(0).toString()));
 		}
 		
 		// remove selection
