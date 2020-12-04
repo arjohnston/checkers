@@ -48,7 +48,6 @@ public class WinConditionSubScene extends CheckersSubScene{
 	 * Set the subscene's header.
 	 */
 	private void setHeader () {
-//		Label header = new Label("P L A Y E R  X  W O N!");
 		headerLabel = new Label("");
 		headerLabel.getStyleClass().add("header");
 
@@ -143,7 +142,7 @@ public class WinConditionSubScene extends CheckersSubScene{
 		timerLabel.setText("Time: " + minutes + ":" + secString);
 		
 		String winner = scene.getPlayerWhoWonName();
-		headerLabel.setText(winner.replaceAll(".", "$0 ") + " W O N !");
+		headerLabel.setText(winner + " won!");
 		
 		JsonFileIO.save(timeElapsedInSeconds, winner);
 	}

@@ -14,6 +14,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
@@ -160,7 +161,8 @@ public class GameBoardSubScene extends CheckersSubScene {
 			
 			gamePieceImageSelected = gameBoardPieces.get(aiMove.getFrom().toString());
 			gamePieceCoordSelected = aiMove.getFrom();
-			updateGameBoard(aiMove.getTo(), aiMove.getJumped());
+			boolean shouldBeUpgraded = checkersLogic.getGameBoard()[aiMove.getFrom().x][aiMove.getFrom().y] == checkersLogic.getGameBoard()[aiMove.getTo().x][aiMove.getTo().y];
+			updateGameBoard(aiMove.getTo(), aiMove.getJumped(), shouldBeUpgraded);
 
 			changeToPlayersTurn(1);
 		} else {
@@ -298,15 +300,17 @@ public class GameBoardSubScene extends CheckersSubScene {
 	private void onClick (Vector2i coord, ImageView playerPiece) {
 		if (gamePieceCoordSelected != null && playerPiece == null) {
 			// take the game piece at the x,y and move its coords to the new coord
-//			try {
 				ArrayList<Vector2i> moves = new ArrayList<Vector2i>();
 				moves.add(coord);
+				
+				int gamePieceSelectedValue = checkersLogic.getGameBoard()[gamePieceCoordSelected.x][gamePieceCoordSelected.y];
 				
 				ArrayList<Vector2i> movePiece = checkersLogic.move(gamePieceCoordSelected, moves);
 				
 				if (movePiece.size() > 0) {
 					updatePieceImage(gamePieceCoordSelected, coord);
-					updateGameBoard(coord, movePiece);
+					
+					updateGameBoard(coord, movePiece, checkersLogic.getGameBoard()[coord.x][coord.y] != gamePieceSelectedValue);
 					
 					int checkForWinningPlayer = checkersLogic.hasWonGame();
 					
@@ -337,6 +341,8 @@ public class GameBoardSubScene extends CheckersSubScene {
 				highlightedSpace.setLayoutY(playerPiece.getLayoutY());
 				
 				add(highlightedSpace);
+				
+				System.out.println(checkersLogic.getAllMoves(coord));
 			}
 		}
 	}
@@ -346,7 +352,7 @@ public class GameBoardSubScene extends CheckersSubScene {
 		gameBoardPieces.remove(from.toString());
 	}
 	
-	private void updateGameBoard (Vector2i to, ArrayList<Vector2i> jumpedPieces) {
+	private void updateGameBoard (Vector2i to, ArrayList<Vector2i> jumpedPieces, boolean hasUpgradedToKing) {
 		this.gameBoard = checkersLogic.getGameBoard();
 		
 		// TODO should use this so we can update the AI
@@ -355,6 +361,12 @@ public class GameBoardSubScene extends CheckersSubScene {
 
 		gamePieceImageSelected.setLayoutX(240 + to.x * 75);
 		gamePieceImageSelected.setLayoutY(100 + to.y * 75);
+		
+		if (gameBoard[to.x][to.y] == 11 && hasUpgradedToKing) {
+			gamePieceImageSelected.setImage(new Image("file:resources/player-1-piece-stacked.png"));
+		} else if (gameBoard[to.x][to.y] == 22 && hasUpgradedToKing) {
+			gamePieceImageSelected.setImage(new Image("file:resources/player-2-piece-stacked.png"));
+		}
 		
 		if (jumpedPieces.size() > 0) {
 			remove(gameBoardPieces.get(jumpedPieces.get(0).toString()));

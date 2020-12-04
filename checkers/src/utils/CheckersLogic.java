@@ -6,9 +6,6 @@ import scene.GameDifficulty;
 
 /**
  * 
- * TODO
- * Logic for become a king!
- *
  */
 
 public class CheckersLogic {
@@ -122,7 +119,7 @@ public class CheckersLogic {
 		return count;
 	}
 	
-	protected ArrayList<Vector2i> getAllMoves(Vector2i coord)
+	public ArrayList<Vector2i> getAllMoves(Vector2i coord)
 	{		
 		ArrayList<Vector2i> moves = new ArrayList<Vector2i>();
 		for(int i=0; i<8; i++)
@@ -325,7 +322,15 @@ public class CheckersLogic {
 				Vector2i move = canMove(currentPiece, moves.get(0));
 				if(move != null)
 				{
-					gameBoard[moves.get(0).x][moves.get(0).y] = gameBoard[currentPiece.x][currentPiece.y];
+					int currentPieceValue = gameBoard[currentPiece.x][currentPiece.y];
+//					gameBoard[moves.get(0).x][moves.get(0).y] = currentPieceValue;
+					
+					if (currentPieceValue == 1 || currentPieceValue == 11) {
+						gameBoard[moves.get(0).x][moves.get(0).y] = checkIfShouldBecomeKing(1, moves.get(0)) ? 11 : currentPieceValue;
+					} else if (currentPieceValue == 2 || currentPieceValue == 22) {
+						gameBoard[moves.get(0).x][moves.get(0).y] = checkIfShouldBecomeKing(2, moves.get(0)) ? 22 : currentPieceValue;
+					}
+					
 					gameBoard[currentPiece.x][currentPiece.y]=0;
 					
 					if (move != currentPiece) removeGamePiece(move);
@@ -348,7 +353,7 @@ public class CheckersLogic {
 	}
 	
 	public CheckersAIReturn moveAI (GameDifficulty gameDifficulty) {
-		CheckersAIReturn aiMove = CheckersAI.move(gameBoard, gameDifficulty);
+		CheckersAIReturn aiMove = CheckersAI.move(this, gameDifficulty);
 		
 		gameBoard[aiMove.getTo().x][aiMove.getTo().y] = gameBoard[aiMove.getFrom().x][aiMove.getFrom().y];
 		gameBoard[aiMove.getFrom().x][aiMove.getFrom().y] = 0;
@@ -358,6 +363,16 @@ public class CheckersLogic {
 	
 	private void removeGamePiece (Vector2i removeMe) {
 		gameBoard[removeMe.x][removeMe.y] = 0;
+	}
+	
+	private void checkIfDraw () {
+		int amountOfMovesAvailable = 0;
+		
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				// TODO !!!
+			}
+		}
 	}
 	
 	/**
