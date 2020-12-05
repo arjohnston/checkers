@@ -2,6 +2,7 @@ package utils;
 
 import java.util.ArrayList;
 
+import javafx.util.Pair;
 import scene.GameDifficulty;
 
 /**
@@ -51,8 +52,40 @@ public class CheckersLogic {
 		}
 	}
 	
+	protected void setGameBoard (int[][] board) {
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				this.gameBoard[i][j] = board[i][j];
+			}
+		}
+	}
+	
 	public int[][] getGameBoard () {
 		return this.gameBoard;
+	}
+	
+	protected ArrayList<Vector2i> getAllWhitePieces () {
+		ArrayList<Vector2i> list = new ArrayList<Vector2i>();
+		
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				if (this.gameBoard[i][j] == 1 || this.gameBoard[i][j] == 11) list.add(new Vector2i(i, j));
+			}
+		}
+		
+		return list;
+	}
+	
+	protected ArrayList<Vector2i> getAllBlackPieces () {
+		ArrayList<Vector2i> list = new ArrayList<Vector2i>();
+		
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				if (this.gameBoard[i][j] == 2 || this.gameBoard[i][j] == 22) list.add(new Vector2i(i, j));
+			}
+		}
+		
+		return list;
 	}
 	
 	protected int getWhitePiecesCount()
@@ -316,14 +349,13 @@ public class CheckersLogic {
 	 */
 	public ArrayList<Vector2i> move (Vector2i currentPiece, ArrayList<Vector2i> moves)
 	{
-		if(gameBoard[moves.get(0).x][moves.get(0).y] ==0)
+		if(currentPiece != null && gameBoard[moves.get(0).x][moves.get(0).y] == 0)
 		{
 			try {
 				Vector2i move = canMove(currentPiece, moves.get(0));
 				if(move != null)
 				{
 					int currentPieceValue = gameBoard[currentPiece.x][currentPiece.y];
-//					gameBoard[moves.get(0).x][moves.get(0).y] = currentPieceValue;
 					
 					if (currentPieceValue == 1 || currentPieceValue == 11) {
 						gameBoard[moves.get(0).x][moves.get(0).y] = checkIfShouldBecomeKing(1, moves.get(0)) ? 11 : currentPieceValue;
@@ -348,31 +380,30 @@ public class CheckersLogic {
 				System.exit(-1);
 			}
 		}
-		
 		return new ArrayList<Vector2i>();
 	}
 	
 	public CheckersAIReturn moveAI (GameDifficulty gameDifficulty) {
-		CheckersAIReturn aiMove = CheckersAI.move(this, gameDifficulty);
-		
-		gameBoard[aiMove.getTo().x][aiMove.getTo().y] = gameBoard[aiMove.getFrom().x][aiMove.getFrom().y];
-		gameBoard[aiMove.getFrom().x][aiMove.getFrom().y] = 0;
-		
-		return aiMove;
+		return CheckersAI.move(this, gameDifficulty);
 	}
 	
 	private void removeGamePiece (Vector2i removeMe) {
 		gameBoard[removeMe.x][removeMe.y] = 0;
 	}
 	
-	private void checkIfDraw () {
+	public boolean checkIfDraw (int playerTurn) {
 		int amountOfMovesAvailable = 0;
 		
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
-				// TODO !!!
+				if (playerTurn == 1 && (gameBoard[i][j] == 1 || gameBoard[i][j] == 11)) amountOfMovesAvailable += getAllMoves(new Vector2i(i, j)).size();
+				else if (playerTurn == 2 && (gameBoard[i][j] == 2 || gameBoard[i][j] == 22)) amountOfMovesAvailable += getAllMoves(new Vector2i(i, j)).size();
+				
+				if (amountOfMovesAvailable > 0) return false;
 			}
 		}
+		
+		return true;
 	}
 	
 	/**

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import application.Configs;
 import gui.CheckersButton;
@@ -19,6 +20,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
+import javafx.util.Pair;
 import scene.CheckersScene;
 import scene.GameDifficulty;
 import utils.CheckersAI;
@@ -29,6 +31,9 @@ import utils.Vector2i;
 
 /**
  * Subscene for the Game Board.
+ * 
+ * TODO
+ * Bug: If AI wins, it shows a screen saying "It was a draw!"
  * 
  * @author Andrew Johnston
  *
@@ -157,14 +162,40 @@ public class GameBoardSubScene extends CheckersSubScene {
 		} else if (player == 2 && isSinglePlayer) {
 			title.setText("Opponent's Turn");
 			
-			CheckersAIReturn aiMove = checkersLogic.moveAI(gameDifficulty);
+			Platform.runLater(() -> {
+				CheckersAIReturn aiMoveReturn = checkersLogic.moveAI(gameDifficulty);
+				gamePieceImageSelected = gameBoardPieces.get(aiMoveReturn.getFrom().toString());
+				gamePieceCoordSelected = aiMoveReturn.getFrom();
+				
+				ArrayList<Vector2i> aiMoves = new ArrayList<Vector2i>();
+				aiMoves.add(aiMoveReturn.getTo());
+				ArrayList<Vector2i> movePiece = checkersLogic.move(aiMoveReturn.getFrom(), aiMoves);
+				
+				if (movePiece.size() > 0) {
+					updatePieceImage(gamePieceCoordSelected, aiMoveReturn.getTo());
+					updateGameBoard(aiMoveReturn.getTo(), movePiece, checkersLogic.getGameBoard()[aiMoveReturn.getTo().x][aiMoveReturn.getTo().y] != checkersLogic.getGameBoard()[aiMoveReturn.getFrom().x][aiMoveReturn.getFrom().y]);
+						
+					int checkForWinningPlayer = checkersLogic.hasWonGame();
+					
+					if (checkForWinningPlayer == 1) {
+						endGame(checkForWinningPlayer);
+					} else if (checkForWinningPlayer == 2) {
+						endGame(-2);
+					} else {
+						changeToPlayersTurn(playerTurn == 1 ? 2 : 1);
+							
+						if (checkersLogic.checkIfDraw(playerTurn) && checkForWinningPlayer < 0) {
+							endGame(-1);
+						}
+					}
+				}
+				
+				changeToPlayersTurn(1);
+			});
 			
-			gamePieceImageSelected = gameBoardPieces.get(aiMove.getFrom().toString());
-			gamePieceCoordSelected = aiMove.getFrom();
-			boolean shouldBeUpgraded = checkersLogic.getGameBoard()[aiMove.getFrom().x][aiMove.getFrom().y] == checkersLogic.getGameBoard()[aiMove.getTo().x][aiMove.getTo().y];
-			updateGameBoard(aiMove.getTo(), aiMove.getJumped(), shouldBeUpgraded);
+			
 
-			changeToPlayersTurn(1);
+			
 		} else {
 			title.setText(playerTwoName + "'s Turn");
 		}
@@ -318,6 +349,10 @@ public class GameBoardSubScene extends CheckersSubScene {
 						endGame(checkForWinningPlayer);
 					} else {
 						changeToPlayersTurn(playerTurn == 1 ? 2 : 1);
+						
+						if (checkersLogic.checkIfDraw(playerTurn)) {
+							endGame(-1);
+						}
 					}
 					
 				} else {
@@ -341,8 +376,6 @@ public class GameBoardSubScene extends CheckersSubScene {
 				highlightedSpace.setLayoutY(playerPiece.getLayoutY());
 				
 				add(highlightedSpace);
-				
-				System.out.println(checkersLogic.getAllMoves(coord));
 			}
 		}
 	}
@@ -354,10 +387,6 @@ public class GameBoardSubScene extends CheckersSubScene {
 	
 	private void updateGameBoard (Vector2i to, ArrayList<Vector2i> jumpedPieces, boolean hasUpgradedToKing) {
 		this.gameBoard = checkersLogic.getGameBoard();
-		
-		// TODO should use this so we can update the AI
-//		gameBoardPieces.get(from.toString()).setLayoutX(240 + to.x * 75);
-//		gameBoardPieces.get(from.toString()).setLayoutY(240 + to.y * 75);
 
 		gamePieceImageSelected.setLayoutX(240 + to.x * 75);
 		gamePieceImageSelected.setLayoutY(100 + to.y * 75);
@@ -388,10 +417,17 @@ public class GameBoardSubScene extends CheckersSubScene {
 	 */
 	private void endGame (int playerWhoWon) {
 		GameTimer.pause();
-		if (!isSinglePlayer) {
-			scene.setWinner(playerWhoWon == 1 ? playerOneName : playerTwoName, GameTimer.getTimeElapsedInSeconds());
+		
+		if (playerWhoWon == 1) {
+			scene.setWinner(playerOneName, GameTimer.getTimeElapsedInSeconds(), WinConditions.PLAYER_ONE);
+		} else if (playerWhoWon == 2 && !isSinglePlayer) {
+			scene.setWinner(playerTwoName, GameTimer.getTimeElapsedInSeconds(), WinConditions.PLAYER_TWO);
+		} else if (playerWhoWon == 2 && isSinglePlayer) {
+			scene.setWinner(null, GameTimer.getTimeElapsedInSeconds(), WinConditions.PLAYER_TWO);
+		} else {
+			scene.setWinner(null, GameTimer.getTimeElapsedInSeconds(), WinConditions.DRAW);
 		}
-		scene.setWinner(playerWhoWon == 1 ? playerOneName : playerTwoName, GameTimer.getTimeElapsedInSeconds());
+		
 		segueToSubScene(SubScenes.WIN_CONDITION);
 	}
 

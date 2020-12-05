@@ -34,6 +34,10 @@ public class CheckersButton extends Button {
 		setStyles();
 	}
 	
+	/**
+	 * Initialize a button with an image view, rather than text
+	 * @param image ImageView
+	 */
 	public CheckersButton (ImageView image) {
 		setGraphic(image);
 		super.getStyleClass().add("menu-button");

@@ -141,10 +141,15 @@ public class WinConditionSubScene extends CheckersSubScene{
 		String secString = seconds < 10 ? "0" + seconds : seconds.toString();
 		timerLabel.setText("Time: " + minutes + ":" + secString);
 		
-		String winner = scene.getPlayerWhoWonName();
-		headerLabel.setText(winner + " won!");
-		
-		JsonFileIO.save(timeElapsedInSeconds, winner);
+		if (scene.getPlayerWhoWonName() == null) {
+			if (scene.getWhoWon() == WinConditions.DRAW) headerLabel.setText("It was a draw!");
+			else headerLabel.setText("Computer won!");
+		} else {
+			String winner = scene.getPlayerWhoWonName();
+			headerLabel.setText(winner + " won!");
+			
+			JsonFileIO.save(timeElapsedInSeconds, winner);
+		}
 	}
 
 	@Override

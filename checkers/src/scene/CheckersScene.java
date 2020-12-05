@@ -11,6 +11,7 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import subscene.SubScenes;
+import subscene.WinConditions;
 
 /**
  * A utility class to represent a Scene, ensuring we have the
@@ -80,8 +81,8 @@ public abstract class CheckersScene extends Scene {
 	 * @param playerNameWhoWon String
 	 * @param timeElapsed Long time in seconds.
 	 */
-	public void setWinner(String playerNameWhoWon, long timeElapsed) {
-		this.sceneManager.setWinner(playerNameWhoWon, timeElapsed);
+	public void setWinner(String playerNameWhoWon, long timeElapsed, WinConditions whoWon) {
+		this.sceneManager.setWinner(playerNameWhoWon, timeElapsed, whoWon);
 		
 	}
 
@@ -99,6 +100,10 @@ public abstract class CheckersScene extends Scene {
 	 */
 	public String getPlayerTwoName() {
 		return this.sceneManager.getPlayerTwoName();
+	}
+	
+	public WinConditions getWhoWon () {
+		return this.sceneManager.getWhoWon();
 	}
 
 	/**

@@ -2,6 +2,7 @@ package scene;
 
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import subscene.WinConditions;
 
 /**
  * The Scene Manager class manages each of the scenes in the game. As
@@ -26,6 +27,7 @@ public class SceneManager {
 	private GameDifficulty gameDifficulty;
 	private long timeElapsed;
 	private String playerNameWhoWon;
+	private WinConditions whoWon;
 	
 	/**
 	 * Create a stage (window) and initialize the scene manager.
@@ -85,9 +87,10 @@ public class SceneManager {
 	 * @param playerNameWhoWon String
 	 * @param timeElapsed Long
 	 */
-	public void setWinner (String playerNameWhoWon, long timeElapsed) {
+	public void setWinner (String playerNameWhoWon, long timeElapsed, WinConditions whoWon) {
 		this.playerNameWhoWon = playerNameWhoWon;
 		this.timeElapsed = timeElapsed;
+		this.whoWon = whoWon;
 	}
 	
 	/**
@@ -96,6 +99,10 @@ public class SceneManager {
 	 */
 	public String getPlayerOneName () {
 		return this.playerOneName;
+	}
+	
+	public WinConditions getWhoWon () {
+		return this.whoWon;
 	}
 	
 	/**
