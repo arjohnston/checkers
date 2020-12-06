@@ -17,6 +17,11 @@ import scene.CheckersScene;
 import scene.GameDifficulty;
 import scene.Scenes;
 
+/**
+ * The sub-scene for the New Game screen to create a Player vs Player match
+ * @author Vishnu Adda
+ *
+ */
 public class NewGamePVPSubScene extends CheckersSubScene {
 	private CheckersScene scene;
 	private String playerOneName;
@@ -24,9 +29,15 @@ public class NewGamePVPSubScene extends CheckersSubScene {
 	private TextField p1NameField;
 	private TextField p2NameField;
 
+	/**
+	 * Initialize the new game PVP sub-scene
+	 * @param scene
+	 */
 	public NewGamePVPSubScene(CheckersScene scene) {
 		super(scene);
 		setLayoutX(Configs.WINDOW_WIDTH);
+		
+		// Generates the UI elements
 		createBackButton();
 		createSoloButton();
 		createNameTexts();
@@ -57,11 +68,15 @@ public class NewGamePVPSubScene extends CheckersSubScene {
 			}
 		});
 		
+		// Places back button near the top left
 		button.setLayoutX(30);
 		button.setLayoutY(30);
 		add(button);
 	}
 	
+	/**
+	 * Displays images for the black and white piece next to the respective player names
+	 */
 	private void createImages () {
 		ImageView playerOnePiece = new ImageView("file:resources/player-1-piece.png");
 		playerOnePiece.setLayoutX(850);
@@ -81,6 +96,7 @@ public class NewGamePVPSubScene extends CheckersSubScene {
 		CheckersButton button = new CheckersButton("SOLO", CheckersButton.ButtonSizes.MEDIUM);
 		button.setStyle("-fx-border-color: white; -fx-alignment: center; -fx-min-width: 150;");
 		
+		// Lambdas related to hover styles, i.e green when hovered, white when not
 		button.setOnMouseEntered(event -> {
 			button.setStyle("-fx-border-color: lightgreen;"
 					+ " -fx-text-fill: lightgreen;"
@@ -99,8 +115,8 @@ public class NewGamePVPSubScene extends CheckersSubScene {
 			@Override
 			public void handle(ActionEvent event) {
 				try {
+					// When clicked, the solo game creation scene should be displayed
 					segueToSubScene(SubScenes.NEW_GAME);
-					//sceneManager.segueTo(Scenes.GAME);
 				} catch (Exception e) {
 					e.printStackTrace();
 					System.exit(-1);
@@ -108,6 +124,7 @@ public class NewGamePVPSubScene extends CheckersSubScene {
 			}
 		});
 		
+		// Set this button near the top right
 		button.setLayoutX(880);
 		button.setLayoutY(20);
 		add(button);
@@ -122,6 +139,7 @@ public class NewGamePVPSubScene extends CheckersSubScene {
 		p1Name.getStyleClass().add("header");
 		p2Name.getStyleClass().add("header");
 		
+		// Sets their names one above the other
 		p1Name.setLayoutX(340);
 		p1Name.setLayoutY(100);
 		
@@ -147,12 +165,14 @@ public class NewGamePVPSubScene extends CheckersSubScene {
 		p1NameField = new TextField();
 		p2NameField = new TextField();
 		
+		// Filler / sample text that is initially displayed
 		p1NameField.setPromptText("Andrew");
 		p2NameField.setPromptText("Vishnu");
 		
 		p1NameField.getStyleClass().add("name-text-field");
 		p2NameField.getStyleClass().add("name-text-field");
 		
+		// Placed below their respective texts
 		p1NameField.setLayoutX(290);
 		p1NameField.setLayoutY(180);
 		p1NameField.setPrefWidth(500);
@@ -169,6 +189,7 @@ public class NewGamePVPSubScene extends CheckersSubScene {
 			p2NameField.setFont(Font.font("Verdana", 30));
 		}
 		
+		// When a key is entered into any of the fields, their respective logical name should update
 		p1NameField.setOnKeyTyped(event -> {
 			playerOneName = p1NameField.getText();
 		});
@@ -195,6 +216,8 @@ public class NewGamePVPSubScene extends CheckersSubScene {
 		
 		button.setStyle("-fx-border-color: white; -fx-alignment: center;");
 		
+		
+		// Hover lambdas; green if hovered, white if not
 		button.setOnMouseEntered(event -> {
 			button.setStyle("-fx-border-color: lightgreen;"
 					+ " -fx-text-fill: lightgreen;"
@@ -226,11 +249,15 @@ public class NewGamePVPSubScene extends CheckersSubScene {
 			}
 		});
 		
+		// Places the button near the bottom
 		button.setLayoutX(440);
 		button.setLayoutY(500);
 		add(button);
 	}
 
+	/**
+	 * Method to aid in the transition between two scenes (basically updates their position)
+	 */
 	@Override
 	public void transitionScene(boolean isSubSceneActive) {
 		TranslateTransition transition = new TranslateTransition();
