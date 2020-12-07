@@ -1,8 +1,6 @@
 package subscene;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.Map;
-import java.util.Timer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,15 +10,19 @@ import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 import scene.CheckersScene;
 import scene.Scenes;
 import utils.GameTimer;
+
+/**
+ * 
+ * Subscene for in game "Game Pause" menu.
+ *
+ */
 
 public class InGameMenuSubScene extends CheckersSubScene {
 	private CheckersScene scene;
@@ -33,6 +35,9 @@ public class InGameMenuSubScene extends CheckersSubScene {
 	private long timeElapsedInSeconds;
 	private Label timerLabel;
 
+	/**
+	 * In game menu constructor. Adds buttons, header, logo and timer.
+	 */
 	public InGameMenuSubScene(CheckersScene scene) {
 		super(scene);
 		buttons = new ArrayList<>();
@@ -45,6 +50,10 @@ public class InGameMenuSubScene extends CheckersSubScene {
 		timeElapsedInSeconds = 0;
 		this.scene = scene;
 	}
+	
+	/**
+	 * Adds header to scene
+	 */
 	private void setHeader () {
 		Label header = new Label("GAME PAUSED");
 		header.getStyleClass().add("header");
@@ -60,6 +69,9 @@ public class InGameMenuSubScene extends CheckersSubScene {
 		add(header);
 	}
 	
+	/**
+	 * Adds logo to scene
+	 */
 	private void setLogo () {
 		ImageView logo = new ImageView("file:resources/logo.png");
 		logo.setLayoutX(Configs.WINDOW_WIDTH - 375);
@@ -67,6 +79,9 @@ public class InGameMenuSubScene extends CheckersSubScene {
 		add(logo);
 	}
 	
+	/**
+	 * Adds timer to the scene
+	 */
 	private void setTimer () {
 		timerLabel = new Label("5:03");
 		timerLabel.getStyleClass().add("paragraph");
@@ -88,6 +103,9 @@ public class InGameMenuSubScene extends CheckersSubScene {
 		add(timerImage);
 	}
 	
+	/**
+	 * Updates timer with the current time elapsed in minutes and seconds
+	 */
 	private void updateTimer () {
 		timeElapsedInSeconds = GameTimer.getTimeElapsedInSeconds();
 		Integer minutes = (int) Math.floor(timeElapsedInSeconds / 60);
@@ -98,11 +116,17 @@ public class InGameMenuSubScene extends CheckersSubScene {
 		Platform.runLater(() -> timerLabel.setText(minutes + ":" + secString));
 	}
 
+	/**
+	 * Adds resume and forfeit buttons
+	 */
 	private void createButtons() {
 		ResumeButton();
 		ForfeitButton();
 	}
 	
+	/**
+	 * The resume option transitions the current scene to Game Board subscene
+	 */
 	private void ResumeButton() {
 		CheckersButton button = new CheckersButton("RESUME");
 		
@@ -121,6 +145,10 @@ public class InGameMenuSubScene extends CheckersSubScene {
 		addMenuButton(button);
 	}
 	
+	/**
+	 * The forfeit option transitions the current scene to win condition scene then back to main menu scene
+	 * 
+	 */
 	private void ForfeitButton() {
 		CheckersButton button = new CheckersButton("FORFEIT GAME");
 		
@@ -143,6 +171,9 @@ public class InGameMenuSubScene extends CheckersSubScene {
 		addMenuButton(button);
 	}
 	
+	/**
+	 * adds the menu button options
+	 */
 	private void addMenuButton (CheckersButton button) {
 		button.setLayoutX(MENU_BUTTON_STARTING_POS_X);
 		button.setLayoutY(MENU_BUTTON_STARTING_POS_Y + buttons.size() * 100);

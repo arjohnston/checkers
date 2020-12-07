@@ -14,7 +14,6 @@ import javafx.scene.text.Font;
 import javafx.util.Duration;
 import application.Configs;
 import scene.CheckersScene;
-import scene.GameDifficulty;
 import scene.Scenes;
 
 /**

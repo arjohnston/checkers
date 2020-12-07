@@ -21,10 +21,18 @@ public class Vector2i {
 		this.y = y;
 	}
 	
+	/**
+	 * Override the toString method to print out a string of the value.
+	 */
 	public String toString () {
 		return "(" + this.x + ", " + this.y + ")";
 	}
 	
+	/**
+	 * Check of two vectors equal each other
+	 * @param vec2 Vector to compare it with
+	 * @return boolean
+	 */
 	public boolean equals(Vector2i vec2) {
         return this.x == vec2.x && this.y == vec2.y;
 	}

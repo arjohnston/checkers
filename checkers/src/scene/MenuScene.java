@@ -7,7 +7,6 @@ import subscene.MainMenuSubScene;
 import subscene.NewGamePVPSubScene;
 import subscene.NewGameSubScene;
 import subscene.SubScenes;
-import subscene.WinConditionSubScene;
 
 /**
  * This scene handles each of the views for the pre-game menu, including:

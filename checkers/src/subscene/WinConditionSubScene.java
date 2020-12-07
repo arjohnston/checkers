@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import application.Configs;
 import gui.CheckersButton;
 import javafx.animation.TranslateTransition;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -63,6 +62,9 @@ public class WinConditionSubScene extends CheckersSubScene{
 		add(headerLabel);
 	}
 	
+	/**
+	 * Set the sub header
+	 */
 	private void setSubHeader () {
 		timerLabel = new Label("Time: 10:23");
 		timerLabel.getStyleClass().add("header");
@@ -89,6 +91,9 @@ public class WinConditionSubScene extends CheckersSubScene{
 		createPlayAgainButton();
 	}
 	
+	/**
+	 * Create a button to return home
+	 */
 	private void createReturnHomeButton () {
 		CheckersButton button = new CheckersButton("RETURN HOME", CheckersButton.ButtonSizes.LARGE);
 		
@@ -111,6 +116,9 @@ public class WinConditionSubScene extends CheckersSubScene{
 		add(button);
 	}
 	
+	/**
+	 * Create a button that says play again
+	 */
 	private void createPlayAgainButton () {
 		CheckersButton button = new CheckersButton("PLAY AGAIN", CheckersButton.ButtonSizes.LARGE);
 		
@@ -133,6 +141,9 @@ public class WinConditionSubScene extends CheckersSubScene{
 		add(button);
 	}
 	
+	/**
+	 * Set the winner once the game is over
+	 */
 	private void setWinner () {
 		timeElapsedInSeconds = scene.getTimeElapsed();
 		Integer minutes = (int) Math.floor(timeElapsedInSeconds / 60);
@@ -142,8 +153,12 @@ public class WinConditionSubScene extends CheckersSubScene{
 		timerLabel.setText("Time: " + minutes + ":" + secString);
 		
 		if (scene.getPlayerWhoWonName() == null) {
-			if (scene.getWhoWon() == WinConditions.DRAW) headerLabel.setText("It was a draw!");
-			else headerLabel.setText("Computer won!");
+			if (scene.getWhoWon() == WinConditions.DRAW) {
+				headerLabel.setText("It was a draw!");
+			}
+			else {
+				headerLabel.setText("Computer won!");
+			}
 		} else {
 			String winner = scene.getPlayerWhoWonName();
 			headerLabel.setText(winner + " won!");

@@ -4,9 +4,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import application.Configs;
 import gui.CheckersButton;
@@ -20,10 +18,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
-import javafx.util.Pair;
 import scene.CheckersScene;
 import scene.GameDifficulty;
-import utils.CheckersAI;
 import utils.CheckersAIReturn;
 import utils.CheckersLogic;
 import utils.GameTimer;
@@ -422,7 +418,7 @@ public class GameBoardSubScene extends CheckersSubScene {
 			scene.setWinner(playerOneName, GameTimer.getTimeElapsedInSeconds(), WinConditions.PLAYER_ONE);
 		} else if (playerWhoWon == 2 && !isSinglePlayer) {
 			scene.setWinner(playerTwoName, GameTimer.getTimeElapsedInSeconds(), WinConditions.PLAYER_TWO);
-		} else if (playerWhoWon == 2 && isSinglePlayer) {
+		} else if (playerWhoWon == -2 && isSinglePlayer) {
 			scene.setWinner(null, GameTimer.getTimeElapsedInSeconds(), WinConditions.PLAYER_TWO);
 		} else {
 			scene.setWinner(null, GameTimer.getTimeElapsedInSeconds(), WinConditions.DRAW);

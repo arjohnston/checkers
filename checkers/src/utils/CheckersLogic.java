@@ -1,25 +1,32 @@
 package utils;
 
 import java.util.ArrayList;
-
-import javafx.util.Pair;
 import scene.GameDifficulty;
 
 /**
+ * General logic for the checkers game, including moves, jumping and win conditions
+ * 
+ * @author Shaion Habibvand
  * 
  */
 
 public class CheckersLogic {
+	//gameBoard multidimensional array variable that will be used for all logical operations in checkers program
 	private int[][] gameBoard;
 	
 	public CheckersLogic(){
 		initializeGameBoard();
 	}
 	
+	//resets gameBoard to being in its original state with all pieces in their original places.
 	public void reset () {
 		initializeGameBoard();
 	}
 	
+	/**
+	 * method that first creates a multidimensional array "gameBoard" and then initializes the "spaces" in the array with numbers that represent whether a piece is there,
+	 * whether the space is empty, or whether the space is not supposed to be a movable space to begin with.
+	 */
 	private void initializeGameBoard () {
 		gameBoard = new int[8][8]; // Checkers has a 8x8 game board configuration
 		
@@ -52,6 +59,10 @@ public class CheckersLogic {
 		}
 	}
 	
+	/**
+	 * Set the gameboard, used for the AI.
+	 * @param board int[][] gameboard
+	 */
 	protected void setGameBoard (int[][] board) {
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
@@ -60,10 +71,15 @@ public class CheckersLogic {
 		}
 	}
 	
+	//Getter method for two dimensional array gameBoard variable since it is private.
 	public int[][] getGameBoard () {
 		return this.gameBoard;
 	}
 	
+	/**
+	 * Return all white pieces
+	 * @return ArrayList<Vector2i>
+	 */
 	protected ArrayList<Vector2i> getAllWhitePieces () {
 		ArrayList<Vector2i> list = new ArrayList<Vector2i>();
 		
@@ -76,6 +92,10 @@ public class CheckersLogic {
 		return list;
 	}
 	
+	/**
+	 * Return all black pieces
+	 * @return ArrayList<Vector2i>
+	 */
 	protected ArrayList<Vector2i> getAllBlackPieces () {
 		ArrayList<Vector2i> list = new ArrayList<Vector2i>();
 		
@@ -88,6 +108,10 @@ public class CheckersLogic {
 		return list;
 	}
 	
+	/**
+	 * Get the count of white regular pieces
+	 * @return int
+	 */
 	protected int getWhitePiecesCount()
 	{
 		int count = 0;
@@ -104,6 +128,10 @@ public class CheckersLogic {
 		return count;
 	}
 	
+	/**
+	 * Get the count of all regular black pieces
+	 * @return int
+	 */
 	protected int getBlackPiecesCount()
 	{
 		int count = 0;
@@ -120,6 +148,10 @@ public class CheckersLogic {
 		return count;
 	}
 	
+	/**
+	 * Get the count of all white kings
+	 * @return int
+	 */
 	protected int getWhiteKingsCount()
 	{
 		int count = 0;
@@ -136,6 +168,10 @@ public class CheckersLogic {
 		return count;
 	}
 	
+	/**
+	 * Get the count of all black kings
+	 * @return int
+	 */
 	protected int getBlackKingsCount()
 	{
 		int count = 0;
@@ -152,6 +188,11 @@ public class CheckersLogic {
 		return count;
 	}
 	
+	/**
+	 * Get all moves for a specific player
+	 * @param coord Vector2i
+	 * @return ArrayList<Vector2i> of all moves for a specific piece
+	 */
 	public ArrayList<Vector2i> getAllMoves(Vector2i coord)
 	{		
 		ArrayList<Vector2i> moves = new ArrayList<Vector2i>();
@@ -328,6 +369,12 @@ public class CheckersLogic {
 		return null;
 	}
 	
+	/**
+	 * Check if a piece should become a king
+	 * @param playerTurn int
+	 * @param coord Vector2i
+	 * @return boolean
+	 */
 	private boolean checkIfShouldBecomeKing (int playerTurn, Vector2i coord) {
 		if (playerTurn == 1) {
 			return coord.y == 7;
@@ -383,14 +430,28 @@ public class CheckersLogic {
 		return new ArrayList<Vector2i>();
 	}
 	
+	/**
+	 * Call the AI algorithm to move a computer piece
+	 * @param gameDifficulty GameDifficulty
+	 * @return CheckersAIReturn class
+	 */
 	public CheckersAIReturn moveAI (GameDifficulty gameDifficulty) {
 		return CheckersAI.move(this, gameDifficulty);
 	}
 	
+	/**
+	 * Remove a game piece from the board (e.g. was jumped)
+	 * @param removeMe Vector2i
+	 */
 	private void removeGamePiece (Vector2i removeMe) {
 		gameBoard[removeMe.x][removeMe.y] = 0;
 	}
 	
+	/**
+	 * Check if the game is a draw (no moves on a specific players turn)
+	 * @param playerTurn int
+	 * @return boolean
+	 */
 	public boolean checkIfDraw (int playerTurn) {
 		int amountOfMovesAvailable = 0;
 		
