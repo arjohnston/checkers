@@ -7,6 +7,9 @@ import scene.GameDifficulty;
 
 /**
  * A Checkers AI based on the minimax algorithm
+ * 
+ * Based on the following Python implementation:
+ * https://www.youtube.com/watch?v=RjdrFHEgV2o
  * @author Vishnu Adda
  *
  */
